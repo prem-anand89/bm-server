@@ -1,0 +1,3 @@
+# Beyond Mechanics server dependencies
+# All stdlib — nothing to install. This file tells Railway/Render
+# it's a Python app and which version to use.
