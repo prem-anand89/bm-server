@@ -1,0 +1,2108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Beyond Mechanics">
+<meta name="theme-color" content="#0C4A6E">
+<title>Beyond Mechanics — Patient Assessment</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bd:#0C4A6E;--b:#075985;--bl:#E0F2FE;--bm:#38BDF8;
+  --tl:#0F6E56;--tlL:#E1F5EE;--tlM:#5DCAA5;
+  --a:#BA7517;--al:#FAEEDA;--am:#EF9F27;
+  --r:#A32D2D;--rl:#FCEBEB;--rm:#E24B4A;
+  --pu:#534AB7;--puL:#EEEDFE;--puM:#AFA9EC;
+  --bg:#f4f6f6;--card:#ffffff;--brd:#dde2e2;--text:#1a2020;--muted:#5a6868;--sub:#9aacac;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#111818;--card:#1c2424;--brd:#2a3636;--text:#e8f0f0;--muted:#7aacac;--sub:#4a6868
+}}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.wrap{max-width:740px;margin:0 auto;padding:10px 10px 50px}
+.clinic-hdr{background:var(--bd);border-radius:16px;padding:15px 18px 13px;margin-bottom:12px;color:#fff;position:relative;overflow:hidden}
+.clinic-hdr::before{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.05);pointer-events:none}
+.ch-top{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.ch-logo{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.ch-name{font-size:14px;font-weight:800;color:#fff}
+.ch-tag{font-size:10px;color:rgba(255,255,255,.5);margin-top:1px}
+.ch-badge{margin-left:auto;padding:3px 10px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.16);border-radius:20px;font-size:10px;font-weight:600;color:rgba(255,255,255,.75)}
+.ch-sub{font-size:10px;color:rgba(255,255,255,.45);line-height:1.7}
+.layout{display:flex;gap:10px}
+.sidebar{width:172px;flex-shrink:0}
+@media(max-width:580px){.layout{flex-direction:column}.sidebar{width:100%}}
+.sb-card{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;overflow:hidden;margin-bottom:10px}
+.sb-hdr{padding:9px 13px;background:var(--bg);border-bottom:1px solid var(--brd);font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.sb-list{max-height:280px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sb-item{padding:9px 13px;cursor:pointer;border-bottom:1px solid var(--brd)}
+.sb-item:last-child{border-bottom:none}
+.sb-item.active{background:var(--puL)}
+.sb-iname{font-size:12px;font-weight:600;color:var(--text)}
+.sb-imeta{font-size:10px;color:var(--muted);margin-top:1px}
+.sb-item.active .sb-iname{color:var(--pu)}
+.sb-isub{font-size:9px;color:var(--sub);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-add{padding:9px 13px;font-size:12px;font-weight:600;color:var(--tl);cursor:pointer;border-top:1px solid var(--brd)}
+.main-area{flex:1;min-width:0}
+.pt-card{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.pt-top{display:flex;align-items:center;gap:9px;margin-bottom:10px;flex-wrap:wrap}
+.pt-av{width:38px;height:38px;border-radius:10px;background:var(--puL);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--pu);flex-shrink:0}
+.pt-nm{font-size:14px;font-weight:700}
+.pt-mt{font-size:10px;color:var(--muted);margin-top:2px}
+.pt-acts{margin-left:auto;display:flex;gap:5px;flex-wrap:wrap}
+.abtn{padding:6px 10px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--brd);background:var(--card);color:var(--muted);min-height:34px;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent}
+.abtn.pri{background:var(--bd);color:#fff;border-color:var(--bd)}
+.abtn.grn{background:var(--tlL);color:var(--tl);border-color:var(--tlM)}
+.abtn.red{background:var(--rl);color:var(--r);border-color:var(--rm)}
+.vpills{display:flex;gap:5px;overflow-x:auto;padding-bottom:3px;-webkit-overflow-scrolling:touch}
+.vp{padding:4px 11px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;border:1.5px solid var(--brd);background:var(--card);color:var(--muted);white-space:nowrap;min-height:28px;display:flex;align-items:center}
+.vp.on{background:var(--puL);border-color:var(--puM);color:var(--pu)}
+.tab-bar{display:flex;gap:4px;overflow-x:auto;padding-bottom:3px;margin-bottom:10px;-webkit-overflow-scrolling:touch}
+.tb{padding:7px 12px;border-radius:20px;border:1.5px solid var(--brd);font-size:11px;font-weight:600;cursor:pointer;background:var(--card);color:var(--muted);white-space:nowrap;min-height:36px;display:flex;align-items:center;-webkit-tap-highlight-color:transparent}
+.tb.on{background:var(--bd);color:#fff;border-color:var(--bd)}
+.card{background:var(--card);border:1.5px solid var(--brd);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.ch{padding:11px 14px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:8px}
+.ci{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.ct{font-size:12px;font-weight:700;color:var(--text)}
+.cs{font-size:10px;color:var(--muted);margin-top:1px}
+.cb{padding:13px 14px}
+.fld{margin-bottom:10px}.fld:last-child{margin-bottom:0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.g2:last-child{margin-bottom:0}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.g3:last-child{margin-bottom:0}
+label{display:block;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+input,select,textarea{width:100%;padding:9px 11px;border:1.5px solid var(--brd);border-radius:9px;font-size:13px;background:var(--card);color:var(--text);font-family:inherit;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--bd)}
+textarea{resize:vertical;min-height:72px;line-height:1.6}
+input[type=date]{min-height:42px}
+hr.div{border:none;border-top:1px solid var(--brd);margin:12px 0}
+.inote{padding:9px 12px;border-radius:9px;background:var(--bl);border-left:3px solid var(--bm);font-size:11px;color:var(--b);margin-bottom:10px;line-height:1.6}
+.empty-s{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;gap:8px;color:var(--muted);text-align:center}
+.es-icon{font-size:36px;margin-bottom:2px}
+.es-txt{font-size:13px;font-weight:600}
+.es-sub{font-size:11px;color:var(--sub)}
+.nrs-row{display:flex;align-items:center;gap:7px;margin-bottom:9px;flex-wrap:wrap}
+.nrs-lbl{font-size:11px;color:var(--muted);font-weight:600;min-width:110px}
+.nrs-bts{display:flex;gap:2px}
+.nb{width:28px;height:28px;border-radius:6px;border:1.5px solid var(--brd);background:var(--bg);font-size:10px;font-weight:700;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
+.body-wrap{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}
+#bodyCanvas{border:1.5px solid var(--brd);border-radius:12px;background:var(--card);cursor:crosshair;touch-action:none;display:block;max-width:100%}
+.mk-btns{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.mkb{padding:6px 11px;border-radius:9px;border:1.5px solid var(--brd);font-size:11px;font-weight:600;cursor:pointer;background:var(--bg);color:var(--muted);-webkit-tap-highlight-color:transparent;min-height:34px}
+.leg{flex:1;min-width:140px}
+.leg-i{display:flex;align-items:center;gap:7px;font-size:11px;margin-bottom:6px;font-weight:500}
+.leg-d{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.fm-t{width:100%;border-collapse:collapse;font-size:11px}
+.fm-t th{padding:6px 7px;background:var(--bg);font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--brd);text-align:left;white-space:nowrap}
+.fm-t td{padding:2px;border:1px solid var(--brd)}
+.fm-t td input,.fm-t td select{border:none;background:transparent;font-size:11px;padding:5px 5px;color:var(--text);font-family:inherit;width:100%}
+.fm-t td input:focus,.fm-t td select:focus{background:var(--bg);outline:none}
+.pv-t{width:100%;border-collapse:collapse;font-size:11px}
+.pv-t th{padding:5px 6px;background:var(--bg);font-size:8px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--brd);text-align:center;white-space:nowrap}
+.pv-t td{padding:1px;border:1px solid var(--brd);text-align:center;background:var(--card)}
+.pv-t td input{border:none;background:transparent;font-size:11px;padding:4px 2px;color:var(--text);font-family:inherit;text-align:center;width:100%;min-width:0}
+.pv-t td input:focus{outline:none;background:var(--bg)}
+/* RIGHT header — indigo */
+.pv-t .pv-r  {background:var(--puL);color:var(--pu);font-size:10px;font-weight:800;letter-spacing:.06em}
+/* LEFT header  — teal */
+.pv-t .pv-l  {background:var(--tlL);color:var(--tl);font-size:10px;font-weight:800;letter-spacing:.06em}
+/* CF sub-header — light grey with dark text */
+.pv-t .pv-cf {background:#e8e6f0;color:#3730A3;font-size:8px;font-weight:700}
+/* CC sub-header — light warm grey with dark text */
+.pv-t .pv-cc {background:#e6f0ec;color:#065F46;font-size:8px;font-weight:700}
+/* Thick divider between Right and Left groups */
+.pv-t .pv-div   {border-left:3px solid var(--brd)!important}
+.pv-t td.pv-div {border-left:3px solid var(--brd)!important}
+/* Aliases kept for any remaining references */
+.pv-t .pv-r-start,.pv-t td.r-start{border-left:3px solid var(--brd)!important}
+.pv-t .pv-l-start,.pv-t td.l-start{border-left:3px solid var(--brd)!important}
+.pv-t .pv-gh{background:var(--puL);color:var(--pu);font-size:8px;font-weight:700}
+.pv-t .pv-go{background:var(--tlL);color:var(--tl);font-size:8px;font-weight:700}
+.pv-t .pv-rcf,.pv-t .pv-lcf{background:#e8e6f0;color:#3730A3;font-size:8px;font-weight:700}
+.pv-t .pv-rcc,.pv-t .pv-lcc{background:#e6f0ec;color:#065F46;font-size:8px;font-weight:700}
+.pv-t td.rcf,.pv-t td.rcc,.pv-t td.lcf,.pv-t td.lcc,.pv-t td.cf,.pv-t td.cc{background:var(--card)}
+.pv-t .pv-label{font-size:10px;font-weight:600;padding:5px 7px;text-align:left;white-space:nowrap;background:var(--bg)}
+.hist-t{width:100%;border-collapse:collapse;font-size:11px}
+.hist-t th{padding:6px 8px;background:var(--bg);font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--brd);text-align:left}
+.hist-t td{padding:2px;border:1px solid var(--brd)}
+.hist-t .rl{font-size:10px;font-weight:700;padding:6px 8px;white-space:nowrap;background:var(--bg);color:var(--text)}
+.hist-t td input{border:none;background:transparent;font-size:11px;padding:5px 5px;color:var(--text);font-family:inherit;width:100%}
+.hist-t td input:focus{background:var(--bg);outline:none}
+.vm-t{width:100%;border-collapse:collapse;font-size:12px}
+.vm-t th{padding:6px 8px;background:var(--bg);font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--brd);text-align:left}
+.vm-t td{padding:3px;border:1px solid var(--brd)}
+.vm-t td input,.vm-t td select{border:none;background:transparent;font-size:11px;padding:5px 5px;color:var(--text);font-family:inherit;width:100%}
+.vm-t td input:focus,.vm-t td select:focus{background:var(--bg);outline:none}
+.vm-sl{font-size:10px;font-weight:600;padding:5px 7px;white-space:nowrap}
+.bl-line{display:grid;grid-template-columns:minmax(0,2fr) 60px 76px 76px 26px;gap:5px;align-items:center;margin-bottom:5px}
+.bl-line input{padding:7px 9px;border:1.5px solid var(--brd);border-radius:9px;font-size:12px;background:var(--card);color:var(--text);font-family:inherit;width:100%}
+.bl-line input:focus{outline:none;border-color:var(--bd)}
+.bl-tot{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:12px 14px;margin-top:10px}
+.btr{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px solid var(--brd)}
+.btr:last-child{border-bottom:none;font-weight:700;font-size:14px;padding-top:8px;margin-top:3px}
+.sbadge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.sp{background:var(--tlL);color:var(--tl)}.su{background:var(--rl);color:var(--r)}.spt{background:var(--al);color:var(--a)}
+.att-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:7px;margin-top:8px}
+.att-c{border:1.5px solid var(--brd);border-radius:10px;overflow:hidden;background:var(--bg)}
+.att-c img{width:100%;height:66px;object-fit:cover;display:block}
+.att-nm{padding:4px 6px;font-size:9px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.att-dl{padding:0 6px 4px;font-size:9px;color:var(--r);cursor:pointer}
+.vm-g2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
+.vm-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:9px}
+.att-em{padding:24px;text-align:center;border:1.5px dashed var(--brd);border-radius:10px;color:var(--muted);font-size:11px}
+.sb-action{padding:9px 13px;font-size:12px;font-weight:600;color:var(--b);cursor:pointer;border-top:1px solid var(--brd);display:flex;align-items:center;gap:7px}
+.sb-action:hover{background:var(--bg)}
+.sb-sync{color:var(--tl)}
+.sb-sync.syncing{opacity:.5;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="clinic-hdr">
+  <div class="ch-top">
+    <div class="ch-logo">BM</div>
+    <div>
+      <div class="ch-name">Beyond Mechanics</div>
+      <div class="ch-tag">Physical Therapy · Fascial Manipulation · Craniosacral Therapy</div>
+    </div>
+    <div class="ch-badge">Patient Records</div>
+  </div>
+  <div class="ch-sub">Healthvalley Hospital, Kondapur, Hitech City &nbsp;·&nbsp; 9032323890 / 6303896974 &nbsp;·&nbsp; beyondmechanicspt@gmail.com</div>
+</div>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sb-card">
+      <div class="sb-hdr">Patients</div>
+      <div style="padding:6px 8px;border-bottom:1px solid var(--brd)"><input id="ptSearch" type="text" placeholder="🔍 Search..." oninput="filterPts(this.value)" style="width:100%;font-size:11px;padding:5px 8px;border:1.5px solid var(--brd);border-radius:7px;background:var(--card);color:var(--text);font-family:inherit"></div>
+      <div class="sb-list" id="ptList"></div>
+      <div class="sb-add" onclick="newPt()">＋ New patient</div>
+    </div>
+    <div class="sb-card">
+      <div class="sb-hdr">Data</div>
+      <div class="sb-action" onclick="exportJSON()" title="Download all patient data as a JSON backup file">⬇ Export backup</div>
+      <div class="sb-action" onclick="document.getElementById('importFile').click()" title="Load a previously exported JSON backup">⬆ Import backup</div>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(this)">
+      <div class="sb-action sb-sync" id="syncBtn" onclick="syncServer()" title="Sync with local SQLite server (see setup guide)">⟳ Sync server <span id="dirtyBadge" style="display:none;background:#E24B4A;color:#fff;border-radius:20px;font-size:9px;padding:1px 6px;font-weight:700;margin-left:2px">●</span></div>
+      <div class="sb-hdr" style="border-top:1px solid var(--brd);margin-top:0">Server</div>
+      <div style="padding:7px 13px">
+        <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">URL</div>
+        <input id="serverUrl" type="text" placeholder="http://localhost:4242" style="width:100%;font-size:11px;padding:6px 8px;border:1.5px solid var(--brd);border-radius:7px;background:var(--card);color:var(--text);font-family:inherit" oninput="saveServerUrl(this.value)">
+        <div id="serverStatus" style="font-size:10px;margin-top:5px;color:var(--muted)">Not connected</div>
+        <div id="lastSyncedLabel" style="font-size:9px;margin-top:3px;color:var(--sub)"></div>
+      </div>
+    </div>
+  </div>
+  <div class="main-area" id="mainArea">
+    <div class="empty-s">
+      <div class="es-icon">🩺</div>
+      <div class="es-txt">No patient selected</div>
+      <div class="es-sub">Add a new patient or select from the list</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+/* ─── STATE ─── */
+var DB = {
+  patients: [],
+  deletedIds: [],  /* IDs deleted locally — sent to server on sync */
+  clinic: {name:'Beyond Mechanics',therapist:'',address:'Healthvalley Hospital, Kondapur, Hitech City',phone:'9032323890 / 6303896974',email:'beyondmechanicspt@gmail.com',currency:'₹',taxRate:0,taxLabel:'GST'}
+};
+try {
+  var _s = localStorage.getItem('bm_v6');
+  if (_s) {
+    var _d = JSON.parse(_s);
+    DB.patients = _d.patients || [];
+    DB.deletedIds = _d.deletedIds || [];
+    if (_d.clinic) { for (var _k in _d.clinic) { if (Object.prototype.hasOwnProperty.call(_d.clinic,_k)) DB.clinic[_k] = _d.clinic[_k]; } }
+  }
+} catch(e) {}
+
+var CUR = null, CV = 0, CT = 'info', BMT = 'pain';
+
+function gid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+function mkVisit() {
+  return {
+    id:gid(), date:new Date().toISOString().slice(0,10),
+    chiefComplaint:'', existingConditions:'', currentMedications:'', similarHistory:'',
+    painfulMovements:'', investigations:'', internalDysf:'', posture:'',
+    si_pa:'', pa_conc:'', extremities:'',
+    nrs:{ current:null, worst:null, best:null, avg:null, notes:'', sleep:'', activity:'', aggravating:'', relieving:'', psfs:[] },
+    bodyChart:{ marks:[], notes:'' },
+    fm:{
+      segments:[], pvCoord:[], pvFusion:[],
+      histPaPrev:[], histTrauma:[], histSurgery:[],
+      historyNotes:'', hypothesis:'',
+      moveVerify:'', palpVerify:'', treatmentNotes:''
+    },
+    msk:{ observation:'', rom:'', palpation:'', specialTests:'', outcomeMeasures:'', diagnosis:'', redFlags:{}, redFlagNotes:'' },
+    vm:{ organs:{}, selectedOrgan:'', globalListening:'', localListening:'', internalDysf:'', technique:'', sessionResponse:'', notes:'' },
+    cst:{ crRate:'', crQuality:'', sagittalSuture:'', coronalSuture:'', lambdoidSuture:'', sphenobasilar:'', temporals:'', frontal:'', parietals:'', occiput:'', dural:'', sbsSacral:'', sacrum:'', cv4:'', stillPointType:'', stillPointResp:'', techniques:'', unwinding:'', sessionResponse:'', notes:'', tmjOpen:'', tmjDeviation:'', tmjEndFeel:'', tmjClick:'', tmjPain:'', tmjMuscle:'', tmjNotes:'' },
+    treatment:{ treatment:'', exerciseProgram:'', advice:'', lifestyle:'', followUp:'', sessionNumber:'' },
+    attachments:[],
+    billing:{ items:[], status:'unpaid', paymentMethod:'', paymentDate:'', notes:'', invoiceNo:'' }
+  };
+}
+
+/* ─── PATIENT CRUD ─── */
+function newPt() {
+  var p = { id:gid(), info:{ name:'', age:'', gender:'', occupation:'' }, visits:[] };
+  DB.patients.push(p);
+  sv();
+  CUR = p;
+  CUR.visits.push(mkVisit());
+  sv();
+  CV = 0; CT = 'info';
+  renderSB();
+  renderMain();
+}
+
+function selectPt(id) {
+  doCollect();
+  var found = null;
+  for (var i = 0; i < DB.patients.length; i++) { if (DB.patients[i].id === id) { found = DB.patients[i]; break; } }
+  if (!found) return;
+  CUR = found;
+  if (!CUR.visits.length) { CUR.visits.push(mkVisit()); sv(); }
+  CV = CUR.visits.length - 1;
+  CT = 'info';
+  renderSB();
+  renderMain();
+}
+
+function addVisit() {
+  if (!CUR) return;
+  doCollect();
+  CUR.visits.push(mkVisit());
+  CV = CUR.visits.length - 1;
+  sv();
+  renderMain();
+}
+
+function switchVisit(i) {
+  doCollect();
+  CV = i;
+  renderMain();
+}
+
+function deletePt() {
+  if (!CUR) return;
+  if (!confirm('Delete this patient and all records?')) return;
+  var deletedId = CUR.id;
+  var newList = [];
+  for (var i = 0; i < DB.patients.length; i++) {
+    if (DB.patients[i].id !== deletedId) newList.push(DB.patients[i]);
+  }
+  DB.patients = newList;
+  /* Record deleted ID so server removes it on next sync */
+  if (!DB.deletedIds) DB.deletedIds = [];
+  if (DB.deletedIds.indexOf(deletedId) < 0) DB.deletedIds.push(deletedId);
+  CUR = null;
+  sv();
+  /* If server is reachable, delete immediately */
+  if (IS_ONLINE && SERVER_URL) {
+    fetch(apiUrl('/delete'), {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({id: deletedId})
+    }).then(function(r){
+      if (r.ok) {
+        /* Remove from deletedIds log once server confirmed */
+        DB.deletedIds = DB.deletedIds.filter(function(id){return id!==deletedId;});
+        sv();
+        showToast('Patient deleted from server ✓');
+      }
+    }).catch(function(){
+      showToast('Deleted locally — will remove from server on next sync');
+    });
+  } else {
+    showToast('Deleted locally — will remove from server on next sync');
+  }
+  renderSB();
+  document.getElementById('mainArea').innerHTML = '<div class="empty-s"><div class="es-icon">🩺</div><div class="es-txt">No patient selected</div><div class="es-sub">Select or add a patient</div></div>';
+}
+
+/* ─── COLLECT FORM DATA ─── */
+function doCollect() {
+  if (!CUR) return;
+  var f = document.getElementById('ptForm');
+  if (!f) return;
+  var v = CUR.visits[CV];
+  var pi = CUR.info;
+
+  var els = f.querySelectorAll('[data-f]');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var path = el.dataset.f.split('.');
+    var obj = v;
+    for (var j = 0; j < path.length - 1; j++) {
+      if (obj[path[j]] === undefined || obj[path[j]] === null) obj[path[j]] = {};
+      obj = obj[path[j]];
+    }
+    obj[path[path.length-1]] = el.value;
+  }
+
+  var fmEls = f.querySelectorAll('[data-fm]');
+  for (var i = 0; i < fmEls.length; i++) {
+    var el = fmEls[i]; var p2 = el.dataset.fm.split('.');
+    var idx = parseInt(p2[0],10); var key = p2[1];
+    if (v.fm.segments[idx]) v.fm.segments[idx][key] = el.value;
+  }
+
+  var pvcEls = f.querySelectorAll('[data-pvc]');
+  for (var i = 0; i < pvcEls.length; i++) {
+    var el = pvcEls[i]; var p2 = el.dataset.pvc.split('.');
+    var idx = parseInt(p2[0],10); var key = p2[1];
+    if (v.fm.pvCoord[idx]) v.fm.pvCoord[idx][key] = el.value;
+  }
+
+  var histEls = f.querySelectorAll('[data-hist]');
+  for (var i = 0; i < histEls.length; i++) {
+    var el = histEls[i]; var p2 = el.dataset.hist.split('.');
+    var cat = p2[0]; var ridx = parseInt(p2[1],10); var key = p2[2];
+    var arr = cat==='pp' ? v.fm.histPaPrev : cat==='tr' ? v.fm.histTrauma : v.fm.histSurgery;
+    if (!arr) { if(cat==='pp') v.fm.histPaPrev=[]; else if(cat==='tr') v.fm.histTrauma=[]; else v.fm.histSurgery=[]; arr = cat==='pp'?v.fm.histPaPrev:cat==='tr'?v.fm.histTrauma:v.fm.histSurgery; }
+    if (arr && arr[ridx]) arr[ridx][key] = el.value;
+  }
+
+  var vmEls = f.querySelectorAll('[data-vm]');
+  for (var i = 0; i < vmEls.length; i++) {
+    var el = vmEls[i]; var p2 = el.dataset.vm.split('.');
+    var organ = p2[0]; var key = p2[1];
+    if (!v.vm.organs[organ]) v.vm.organs[organ] = {};
+    v.vm.organs[organ][key] = el.value;
+  }
+
+  var blEls = f.querySelectorAll('[data-bl]');
+  for (var i = 0; i < blEls.length; i++) {
+    var el = blEls[i]; var p2 = el.dataset.bl.split('.');
+    var idx = parseInt(p2[0],10); var key = p2[1];
+    if (v.billing.items[idx]) v.billing.items[idx][key] = el.value;
+  }
+
+  var clEls = f.querySelectorAll('[data-cl]');
+  for (var i = 0; i < clEls.length; i++) { DB.clinic[clEls[i].dataset.cl] = clEls[i].value; }
+
+  var infoKeys = ['name','age','gender','occupation'];
+  for (var i = 0; i < infoKeys.length; i++) {
+    var el = f.querySelector('[data-info="'+infoKeys[i]+'"]');
+    if (el) pi[infoKeys[i]] = el.value;
+  }
+
+  /* Red flags are saved immediately by toggleRedFlag() — no need to re-collect here */
+
+  /* Update timestamp on the current patient so sync knows it changed */
+  if (CUR) { CUR._local_updated = new Date().toISOString(); }
+
+  sv();
+}
+
+/* ─── RENDER SIDEBAR ─── */
+function renderSB() {
+  var list = document.getElementById('ptList');
+  if (!list) return;
+  var html = '';
+  for (var i = 0; i < DB.patients.length; i++) {
+    var p = DB.patients[i];
+    var n = p.info.name ? p.info.name : 'Unnamed';
+    var active = (CUR && CUR.id === p.id) ? ' active' : '';
+    /* Get last visit summary */
+    var lastV = p.visits.length ? p.visits[p.visits.length-1] : null;
+    var summary = '';
+    if (lastV) {
+      var cc = lastV.chiefComplaint || '';
+      summary = cc.length > 28 ? cc.slice(0,28)+'…' : cc;
+      if (!summary && lastV.msk && lastV.msk.diagnosis) summary = lastV.msk.diagnosis.slice(0,28);
+    }
+    var nrsScore = (lastV && lastV.nrs && lastV.nrs.current !== null && lastV.nrs.current !== undefined) ? ' · NRS '+lastV.nrs.current : '';
+    html += '<div class="sb-item'+active+'" onclick="selectPt(\''+p.id+'\')">' +
+            '<div class="sb-iname">'+esc(n)+'</div>' +
+            '<div class="sb-imeta">'+p.visits.length+' visit'+(p.visits.length!==1?'s':'')+nrsScore+'</div>' +
+            (summary ? '<div class="sb-isub">'+esc(summary)+'</div>' : '') +
+            '</div>';
+  }
+  list.innerHTML = html;
+}
+
+/* ─── RENDER MAIN ─── */
+function renderMain() {
+  if (!CUR) return;
+  var pi = CUR.info;
+  var ini = (pi.name ? pi.name.charAt(0).toUpperCase() : '?') + (pi.name && pi.name.split(' ')[1] ? pi.name.split(' ')[1].charAt(0).toUpperCase() : '');
+
+  var pills = '';
+  for (var i = 0; i < CUR.visits.length; i++) {
+    var vi = CUR.visits[i];
+    var viNRS = (vi.nrs && vi.nrs.current !== null && vi.nrs.current !== undefined) ? ' · '+vi.nrs.current : '';
+    var viCol = viNRS ? (vi.nrs.current<=3?' style="color:#1D9E75"':vi.nrs.current<=6?' style="color:#BA7517"':' style="color:#E24B4A"') : '';
+    pills += '<span class="vp'+(i===CV?' on':'')+'" onclick="switchVisit('+i+')">'+(i===0?'Initial':'FU '+i)+' &middot; '+vi.date+(viNRS?'<span'+viCol+'>'+viNRS+'</span>':'')+'</span>';
+  }
+
+  var TABS = [['info','Info'],['body','Body chart'],['nrs','Pain NRS'],['msk','Assessment'],['fm','FM'],['vm','VM'],['cst','CST'],['treatment','Treatment'],['files','Files'],['billing','Billing']];
+  var tabHtml = '';
+  for (var i = 0; i < TABS.length; i++) {
+    tabHtml += '<span class="tb'+(TABS[i][0]===CT?' on':'')+'" onclick="switchTab(\''+TABS[i][0]+'\',this)">'+TABS[i][1]+'</span>';
+  }
+
+  document.getElementById('mainArea').innerHTML =
+    '<div class="pt-card">'
+    +'<div class="pt-top">'
+    +'<div class="pt-av">'+ini+'</div>'
+    +'<div><div class="pt-nm">'+esc(pi.name||'New Patient')+'</div>'
+    +'<div class="pt-mt">'+(pi.age?pi.age+'y ':'')+esc(pi.gender||'')+' '+(pi.occupation?'· '+esc(pi.occupation):'')+'</div></div>'
+    +'<div class="pt-acts">'
+    +'<button class="abtn" onclick="addVisit()">＋ Visit</button>'
+    +'<button class="abtn grn" onclick="doCollect();doPrint(\'note\')">🖨 Note</button>'
+    +'<button class="abtn grn" onclick="doCollect();doPrint(\'bill\')">🧾 Bill</button>'
+    +'<button class="abtn pri" id="saveBtn" onclick="doCollectAndSave()">Save</button>'
+    +'<button class="abtn red" onclick="deletePt()">🗑</button>'
+    +'</div></div>'
+    +'<div class="vpills">'+pills+'</div>'
+    +'</div>'
+    +'<div class="tab-bar">'+tabHtml+'</div>'
+    +'<div id="tabContent"></div>';
+
+  renderTab(CT);
+}
+
+function switchTab(name, el) {
+  doCollect();
+  CT = name;
+  var tabs = document.querySelectorAll('.tb');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
+  if (el) el.classList.add('on');
+  renderTab(name);
+}
+
+function renderTab(name) {
+  var c = document.getElementById('tabContent');
+  if (!c || !CUR) return;
+  var v = CUR.visits[CV];
+  var pi = CUR.info;
+  if      (name==='info')      c.innerHTML = rInfo(v,pi);
+  else if (name==='body')      c.innerHTML = rBody(v);
+  else if (name==='nrs')       c.innerHTML = rNRS(v);
+  else if (name==='fm')        c.innerHTML = rFM(v);
+  else if (name==='msk')       c.innerHTML = rMSK(v);
+  else if (name==='vm')        c.innerHTML = rVM(v);
+  else if (name==='cst')       c.innerHTML = rCST(v);
+  else if (name==='treatment') c.innerHTML = rTreatment(v);
+  else if (name==='files')     c.innerHTML = rFiles(v);
+  else if (name==='billing')   c.innerHTML = rBilling(v);
+  if (name==='body') initCanvas(v);
+  if (name==='nrs')  { initNRS(v); setTimeout(drawNRSChart, 50); }
+}
+
+/* ─── FIELD HELPERS ─── */
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fi(f,val,ph){ return '<input data-f="'+f+'" value="'+esc(val)+'" placeholder="'+(ph||'')+'" oninput="doCollect()" type="text">'; }
+function fd(f,val)   { return '<input data-f="'+f+'" value="'+(val||'')+'" oninput="doCollect()" type="date">'; }
+function ft(f,val,ph,h){ return '<textarea data-f="'+f+'" placeholder="'+(ph||'')+'" oninput="doCollect()" style="min-height:'+(h||72)+'px">'+esc(val)+'</textarea>'; }
+function fsel(f,val,opts){
+  var s='<select data-f="'+f+'" onchange="doCollect()"><option value="">—</option>';
+  for(var i=0;i<opts.length;i++) s+='<option'+(val===opts[i]?' selected':'')+'>'+opts[i]+'</option>';
+  return s+'</select>';
+}
+function sbtn(label){ return '<button type="button" onclick="'+label+'" style="padding:5px 10px;border-radius:8px;border:1.5px solid var(--brd);background:var(--card);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;margin-left:auto">＋ Add</button>'; }
+
+/* ─── INFO TAB ─── */
+function rInfo(v,pi) {
+  return '<form id="ptForm" onsubmit="return false">'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E0F2FE">👤</div><div><div class="ct">Patient details</div></div></div><div class="cb">'
+  +'<div class="g2"><div class="fld"><label>Full name</label><input data-info="name" value="'+esc(pi.name||'')+'" oninput="doCollect()" type="text"></div>'
+  +'<div class="fld"><label>Age</label><input data-info="age" value="'+esc(pi.age||'')+'" oninput="doCollect()" type="text" placeholder="e.g. 34"></div></div>'
+  +'<div class="g2"><div class="fld"><label>Gender</label>'+fselInfo('gender',pi.gender||'',['Male','Female','Other'])+'</div>'
+  +'<div class="fld"><label>Occupation / Sport / Activity</label><input data-info="occupation" value="'+esc(pi.occupation||'')+'" oninput="doCollect()" type="text"></div></div>'
+  +'<div class="g2"><div class="fld"><label>Phone</label>'+fi('nrs.phone',v.nrs&&v.nrs.phone||'','Phone number')+'</div>'
+  +'<div class="fld"><label>Visit date</label>'+fd('date',v.date)+'</div></div>'
+  +'</div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">📋</div><div><div class="ct">Chief complaint</div></div></div><div class="cb">'
+  +'<div class="fld">'+ft('chiefComplaint',v.chiefComplaint,'Describe the main complaint, onset, mechanism of injury...',110)+'</div>'
+  +'</div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FCEBEB">🩺</div><div><div class="ct">Medical history</div></div></div><div class="cb">'
+  +'<div class="fld"><label>H/o similar complaints</label>'+ft('similarHistory',v.similarHistory,'Previous episodes, prior treatment received and response...',76)+'</div>'
+  +'<div class="fld"><label>Existing conditions</label>'+ft('existingConditions',v.existingConditions,'Diabetes, hypertension, osteoporosis, autoimmune, cardiac conditions...',76)+'</div>'
+  +'<div class="fld"><label>Current / past medications</label>'+ft('currentMedications',v.currentMedications,'NSAIDs, steroids, anticoagulants, supplements, recent injections...',76)+'</div>'
+  +'</div></div>'
+
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#EEEDFE">🏥</div><div><div class="ct">Clinic settings</div><div class="cs">Used in printed notes and bills</div></div></div><div class="cb">'
+  +'<div class="g3"><div class="fld"><label>Clinic name</label><input data-cl="name" value="'+esc(DB.clinic.name)+'" oninput="doCollect()" type="text"></div>'
+  +'<div class="fld"><label>Therapist</label><input data-cl="therapist" value="'+esc(DB.clinic.therapist)+'" oninput="doCollect()" type="text"></div>'
+  +'<div class="fld"><label>Address</label><input data-cl="address" value="'+esc(DB.clinic.address)+'" oninput="doCollect()" type="text"></div></div>'
+  +'<div class="g3"><div class="fld"><label>Phone</label><input data-cl="phone" value="'+esc(DB.clinic.phone)+'" oninput="doCollect()" type="tel"></div>'
+  +'<div class="fld"><label>Email</label><input data-cl="email" value="'+esc(DB.clinic.email)+'" oninput="doCollect()" type="email"></div>'
+  +'<div class="fld"><label>Currency</label><input data-cl="currency" value="'+esc(DB.clinic.currency)+'" oninput="doCollect()" type="text"></div></div>'
+  +'<div class="g2"><div class="fld"><label>Tax rate (%)</label><input data-cl="taxRate" value="'+(DB.clinic.taxRate||0)+'" oninput="doCollect()" type="number"></div>'
+  +'<div class="fld"><label>Tax label</label><input data-cl="taxLabel" value="'+esc(DB.clinic.taxLabel)+'" oninput="doCollect()" type="text"></div></div>'
+  +'</div></div>'
+  +'</form>';
+}
+
+function fselInfo(key,val,opts){
+  var s='<select data-info="'+key+'" onchange="doCollect()"><option value="">—</option>';
+  for(var i=0;i<opts.length;i++) s+='<option'+(val===opts[i]?' selected':'')+'>'+opts[i]+'</option>';
+  return s+'</select>';
+}
+
+/* ─── BODY CHART ─── */
+function rBody(v) {
+  return '<form id="ptForm" onsubmit="return false">'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FCEBEB">🩻</div><div><div class="ct">Body chart</div><div class="cs">Tap to place · tap again to remove</div></div></div><div class="cb">'
+  +'<div class="mk-btns">'
+  +'<button type="button" id="mkb_pain" class="mkb" style="background:#E24B4A;border-color:#E24B4A;color:#fff" onclick="setBMT(\'pain\')">Pain</button>'
+  +'<button type="button" id="mkb_numbness" class="mkb" onclick="setBMT(\'numbness\')">Numbness</button>'
+  +'<button type="button" id="mkb_stiffness" class="mkb" onclick="setBMT(\'stiffness\')">Stiffness</button>'
+  +'<button type="button" id="mkb_referred" class="mkb" onclick="setBMT(\'referred\')">Referred</button>'
+  +'<button type="button" class="mkb" style="margin-left:auto" onclick="clearMarks()">Clear</button>'
+  +'</div>'
+  +'<div class="body-wrap">'
+  +'<canvas id="bodyCanvas" width="260" height="300"></canvas>'
+  +'<div class="leg">'
+  +'<div class="leg-i"><div class="leg-d" style="background:#E24B4A"></div>Pain</div>'
+  +'<div class="leg-i"><div class="leg-d" style="background:#534AB7"></div>Numbness / tingling</div>'
+  +'<div class="leg-i"><div class="leg-d" style="background:#BA7517"></div>Stiffness</div>'
+  +'<div class="leg-i"><div class="leg-d" style="background:#1D9E75"></div>Referred</div>'
+  +'<hr class="div"><div class="fld"><label>Notes</label>'+ft('bodyChart.notes',(v.bodyChart&&v.bodyChart.notes)||'','Radiation, patterns...',72)+'</div>'
+  +'</div></div>'
+  +'</div></div></form>';
+}
+
+function setBMT(t) {
+  BMT = t;
+  var COLS = {pain:'#E24B4A',numbness:'#534AB7',stiffness:'#BA7517',referred:'#1D9E75'};
+  var keys = ['pain','numbness','stiffness','referred'];
+  for (var i=0;i<keys.length;i++) {
+    var k=keys[i]; var el=document.getElementById('mkb_'+k); if(!el)continue;
+    if(k===t){el.style.background=COLS[k];el.style.borderColor=COLS[k];el.style.color='#fff';}
+    else{el.style.background='';el.style.borderColor='';el.style.color='';}
+  }
+}
+
+function clearMarks() {
+  if(!CUR)return;
+  var v=CUR.visits[CV];
+  if(!v.bodyChart)v.bodyChart={marks:[],notes:''};
+  v.bodyChart.marks=[];
+  sv();drawBody(v);
+}
+
+function initCanvas(v) {
+  var c = document.getElementById('bodyCanvas');
+  if (!c) return;
+
+  /* Fix for retina/HiDPI displays — canvas looks blurry on iPad otherwise */
+  var dpr = window.devicePixelRatio || 1;
+  var logW = 260, logH = 300;
+  c.width  = Math.round(logW * dpr);
+  c.height = Math.round(logH * dpr);
+  c.style.width  = logW + 'px';
+  c.style.height = logH + 'px';
+  var ctx2 = c.getContext('2d');
+  ctx2.scale(dpr, dpr);
+
+  function getPos(e) {
+    var rect = c.getBoundingClientRect();
+    /* Use logical CSS pixels for hit detection */
+    var src = e.changedTouches ? e.changedTouches[0] : e;
+    return {
+      x: Math.round((src.clientX - rect.left) * (logW / rect.width)),
+      y: Math.round((src.clientY - rect.top)  * (logH / rect.height))
+    };
+  }
+
+  var tapped = false; /* prevent ghost click after touchend */
+
+  function onTouch(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    tapped = true;
+    var pos = getPos(e);
+    handleTap(pos);
+    setTimeout(function(){ tapped = false; }, 400);
+  }
+
+  function onClick(e) {
+    if (tapped) return; /* already handled by touch */
+    var pos = getPos(e);
+    handleTap(pos);
+  }
+
+  function handleTap(pos) {
+    if (!v.bodyChart) v.bodyChart = {marks:[], notes:''};
+    var found = -1;
+    for (var i = 0; i < v.bodyChart.marks.length; i++) {
+      var m = v.bodyChart.marks[i];
+      var dist = Math.sqrt((m.x-pos.x)*(m.x-pos.x)+(m.y-pos.y)*(m.y-pos.y));
+      if (dist < 18) { found = i; break; }
+    }
+    if (found >= 0) v.bodyChart.marks.splice(found, 1);
+    else v.bodyChart.marks.push({x: pos.x, y: pos.y, type: BMT});
+    sv();
+    drawBody(v);
+  }
+
+  c.addEventListener('touchend', onTouch, {passive: false});
+  c.addEventListener('click', onClick);
+  drawBody(v);
+}
+
+function drawBody(v) {
+  var c = document.getElementById('bodyCanvas');
+  if (!c) return;
+  var ctx = c.getContext('2d');
+  /* Use logical CSS dimensions for all drawing */
+  var W = parseFloat(c.style.width)  || 260;
+  var H = parseFloat(c.style.height) || 300;
+  ctx.clearRect(0, 0, W, H);
+  var dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var skin=dark?'#2a3838':'#D4C5B0';
+  var strk=dark?'#4a6868':'#A8937A';
+  var divC=dark?'#3a5050':'#c8bfaf';
+
+  function fig(cx){
+    ctx.fillStyle=skin;ctx.strokeStyle=strk;ctx.lineWidth=1.4;
+    ctx.beginPath();ctx.ellipse(cx,22,14,16,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.fillRect(cx-5,37,10,9);ctx.strokeRect(cx-5,37,10,9);
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(cx-18,46,36,50,4);else ctx.rect(cx-18,46,36,50);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx-18,50);ctx.lineTo(cx-30,90);ctx.lineTo(cx-24,92);ctx.lineTo(cx-12,53);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx+18,50);ctx.lineTo(cx+30,90);ctx.lineTo(cx+24,92);ctx.lineTo(cx+12,53);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx-30,90);ctx.lineTo(cx-32,122);ctx.lineTo(cx-26,123);ctx.lineTo(cx-24,92);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx+30,90);ctx.lineTo(cx+32,122);ctx.lineTo(cx+26,123);ctx.lineTo(cx+24,92);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.ellipse(cx-29,126,4,5,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.ellipse(cx+29,126,4,5,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(cx-16,96,32,16,3);else ctx.rect(cx-16,96,32,16);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx-8,112);ctx.lineTo(cx-10,158);ctx.lineTo(cx-4,158);ctx.lineTo(cx-2,112);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx+8,112);ctx.lineTo(cx+10,158);ctx.lineTo(cx+4,158);ctx.lineTo(cx+2,112);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx-10,158);ctx.lineTo(cx-9,192);ctx.lineTo(cx-3,192);ctx.lineTo(cx-4,158);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx+10,158);ctx.lineTo(cx+9,192);ctx.lineTo(cx+3,192);ctx.lineTo(cx+4,158);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.ellipse(cx-6,196,6,4,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.ellipse(cx+6,196,6,4,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  }
+
+  fig(65); fig(195);
+  ctx.fillStyle=dark?'#6aacac':'#7a9898';
+  ctx.font='bold 9px sans-serif';ctx.textAlign='center';
+  ctx.fillText('Anterior',65,214);ctx.fillText('Posterior',195,214);
+  ctx.font='8px sans-serif';ctx.fillStyle=dark?'#3a5858':'#c0b0a0';
+  ctx.fillText('L',42,210);ctx.fillText('R',88,210);
+  ctx.fillText('R',172,210);ctx.fillText('L',218,210);
+  ctx.strokeStyle=divC;ctx.lineWidth=0.6;ctx.setLineDash([3,4]);
+  ctx.beginPath();ctx.moveTo(W/2,4);ctx.lineTo(W/2,210);ctx.stroke();
+  ctx.setLineDash([]);
+  var COLS={pain:'#E24B4A',numbness:'#534AB7',stiffness:'#BA7517',referred:'#1D9E75'};
+  var marks=(v.bodyChart&&v.bodyChart.marks)?v.bodyChart.marks:[];
+  for(var i=0;i<marks.length;i++){
+    var m=marks[i]; var col=COLS[m.type]||'#E24B4A';
+    ctx.fillStyle=col+'bb';ctx.strokeStyle=col;ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(m.x,m.y,7,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.strokeStyle='#fff';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(m.x-3,m.y-3);ctx.lineTo(m.x+3,m.y+3);ctx.moveTo(m.x+3,m.y-3);ctx.lineTo(m.x-3,m.y+3);ctx.stroke();
+  }
+}
+
+/* ─── NRS ─── */
+function rNRS(v) {
+  var n=v.nrs||{};
+  function nrsRow(lbl,key){
+    var html='<div class="nrs-row"><span class="nrs-lbl">'+lbl+'</span><div class="nrs-bts">';
+    for(var i=0;i<=10;i++){
+      var col=i<=3?'#1D9E75':i<=6?'#BA7517':'#E24B4A';
+      var sel=n[key]===i?' style="background:'+col+';border-color:'+col+';color:#fff"':'';
+      html+='<button type="button" class="nb" id="nr_'+key+'_'+i+'"'+sel+' onclick="setNRS(\''+key+'\','+i+')">'+i+'</button>';
+    }
+    return html+'</div></div>';
+  }
+  return '<form id="ptForm" onsubmit="return false">'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FCEBEB">📊</div><div><div class="ct">Numeric rating scale (0–10)</div></div></div><div class="cb">'
+  +'<div style="display:flex;gap:10px;font-size:10px;font-weight:700;margin-bottom:10px"><span style="color:#1D9E75">■ 0–3 Mild</span><span style="color:#BA7517">■ 4–6 Moderate</span><span style="color:#E24B4A">■ 7–10 Severe</span></div>'
+  +nrsRow('Current pain','current')+nrsRow('Worst (24h)','worst')+nrsRow('Best (24h)','best')+nrsRow('Average (24h)','avg')
+  +'<hr class="div"><div class="fld"><label>Pain quality notes</label>'+ft('nrs.notes',n.notes,'Aching, burning, sharp, throbbing...',60)+'</div>'
+  +'</div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">🎯</div>'
+  +'<div><div class="ct">Patient-specific functional scale (PSFS)</div><div class="cs">0 = unable · 10 = normal · scored each visit</div></div></div><div class="cb">'
+  +'<div class="fld" style="margin-bottom:10px"><div style="display:grid;grid-template-columns:minmax(0,2fr) 80px;gap:8px;align-items:center;margin-bottom:5px">'
+  +'<div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Activity</div>'
+  +'<div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Score (0–10)</div></div>'
+  +psfsRows(n)+'</div>'
+  +'</div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">🏃</div><div><div class="ct">Functional impact</div></div></div><div class="cb">'
+  +'<div class="g2"><div class="fld"><label>Sleep</label>'+fsel('nrs.sleep',n.sleep,['None','Mild','Moderate','Severe'])+'</div>'
+  +'<div class="fld"><label>Activity</label>'+fsel('nrs.activity',n.activity,['None','Mild','Moderate','Severe'])+'</div></div>'
+  +'<div class="g2"><div class="fld"><label>Aggravating factors</label>'+ft('nrs.aggravating',n.aggravating,'',56)+'</div>'
+  +'<div class="fld"><label>Relieving factors</label>'+ft('nrs.relieving',n.relieving,'',56)+'</div></div>'
+  +'</div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E0F2FE">📈</div>'
+  +'<div><div class="ct">Progress chart</div><div class="cs">NRS current pain across all visits</div></div></div><div class="cb">'
+  +'<canvas id="nrsChart" width="560" height="160" style="width:100%;height:auto;max-height:160px"></canvas>'
+  +'</div></div>'
+  +'</form>';
+}
+
+function initNRS(v) {
+  var n=v.nrs||{};
+  var keys=['current','worst','best','avg'];
+  for(var ki=0;ki<keys.length;ki++){
+    var key=keys[ki];
+    if(n[key]!==null&&n[key]!==undefined){
+      var i=n[key]; var el=document.getElementById('nr_'+key+'_'+i);
+      if(el){var col=i<=3?'#1D9E75':i<=6?'#BA7517':'#E24B4A';el.style.background=col;el.style.borderColor=col;el.style.color='#fff';}
+    }
+  }
+}
+
+function setNRS(key,val){
+  if(!CUR)return;
+  var v=CUR.visits[CV];
+  if(!v.nrs)v.nrs={};
+  v.nrs[key]=(v.nrs[key]===val)?null:val;
+  sv();
+  var keys=['current','worst','best','avg'];
+  for(var ki=0;ki<keys.length;ki++){
+    var k=keys[ki];
+    for(var i=0;i<=10;i++){
+      var el=document.getElementById('nr_'+k+'_'+i); if(!el)continue;
+      if(v.nrs[k]===i){var col=i<=3?'#1D9E75':i<=6?'#BA7517':'#E24B4A';el.style.background=col;el.style.borderColor=col;el.style.color='#fff';}
+      else{el.style.background='';el.style.borderColor='';el.style.color='';}
+    }
+  }
+}
+
+/* ─── FM TAB ─── */
+function rFM(v) {
+  var fm = v.fm || {};
+  var segs = fm.segments || [];
+  var pvC  = fm.pvCoord  || [];
+  var pvF  = fm.pvFusion || [];
+  var hPP  = fm.histPaPrev  || [];
+  var hTR  = fm.histTrauma  || [];
+  var hSU  = fm.histSurgery || [];
+
+  /* ── Segment rows ── */
+  var segHtml='';
+  for(var i=0;i<segs.length;i++){
+    var s=segs[i];
+    segHtml+='<tr>'
+      +'<td><input data-fm="'+i+'.region" value="'+esc(s.region||'')+'" oninput="doCollect()" placeholder="Segment" style="min-width:70px"></td>'
+      +'<td><select data-fm="'+i+'.side" onchange="doCollect()" style="min-width:48px"><option value="">—</option>'
+      +'<option'+(s.side==='lt'?' selected':'')+'>lt</option><option'+(s.side==='rt'?' selected':'')+'>rt</option><option'+(s.side==='bil'?' selected':'')+'>bil</option></select></td>'
+      +'<td><input data-fm="'+i+'.locat" value="'+esc(s.locat||'')+'" oninput="doCollect()" style="min-width:58px"></td>'
+      +'<td><input data-fm="'+i+'.durat" value="'+esc(s.durat||'')+'" oninput="doCollect()" style="min-width:52px"></td>'
+      +'<td><input data-fm="'+i+'.traumatic" value="'+esc(s.traumatic||'')+'" oninput="doCollect()" placeholder="Y/N" style="min-width:40px"></td>'
+      +'<td><input data-fm="'+i+'.vrs" value="'+esc(s.vrs||'')+'" oninput="doCollect()" style="min-width:46px"></td>'
+      +'<td><input data-fm="'+i+'.rec" value="'+esc(s.rec||'')+'" oninput="doCollect()" style="min-width:40px"></td>'
+      +'<td><input data-fm="'+i+'.painful" value="'+esc(s.painful||'')+'" oninput="doCollect()" style="min-width:82px"></td>'
+      +'<td style="width:26px;padding:2px"><button type="button" onclick="delSeg('+i+')" style="border:none;background:transparent;cursor:pointer;color:var(--r);font-size:16px;line-height:1;padding:2px">×</button></td>'
+      +'</tr>';
+  }
+
+  /* ── History rows helper ── */
+  function histRows(arr, cat) {
+    var html='';
+    var delFn = cat==='pp'?'delHistPP':cat==='tr'?'delHistTR':'delHistSU';
+    for(var i=0;i<arr.length;i++){
+      var r=arr[i];
+      html+='<tr>'
+        +'<td><input data-hist="'+cat+'.'+i+'.segments" value="'+esc(r.segments||'')+'" oninput="doCollect()" style="min-width:62px"></td>'
+        +'<td><input data-hist="'+cat+'.'+i+'.monthYear" value="'+esc(r.monthYear||'')+'" oninput="doCollect()" style="min-width:60px"></td>'
+        +'<td><input data-hist="'+cat+'.'+i+'.diagnosis" value="'+esc(r.diagnosis||'')+'" oninput="doCollect()" style="min-width:80px"></td>'
+        +'<td><input data-hist="'+cat+'.'+i+'.recovery" value="'+esc(r.recovery||'')+'" oninput="doCollect()" style="min-width:70px"></td>'
+        +'<td style="width:24px;padding:1px"><button type="button" onclick="'+delFn+'('+i+')" style="border:none;background:transparent;cursor:pointer;color:var(--r);font-size:15px;line-height:1;padding:2px">×</button></td>'
+        +'</tr>';
+    }
+    return html;
+  }
+
+  function histSection(label, arr, cat, addFn) {
+    var rows = histRows(arr, cat);
+    return '<tr>'
+      +'<td class="rl" style="vertical-align:top;padding-top:10px">'+label
+      +'<div style="margin-top:5px"><button type="button" onclick="'+addFn+'()" style="padding:2px 8px;border-radius:6px;border:1px solid var(--brd);background:var(--card);color:var(--tl);font-size:10px;font-weight:700;cursor:pointer">＋</button></div>'
+      +'</td>'
+      +'<td colspan="5" style="padding:0"><table style="width:100%;border-collapse:collapse">'
+      +(rows||'<tr><td colspan="5" style="padding:7px 8px;font-size:10px;color:var(--sub)">—</td></tr>')
+      +'</table></td>'
+      +'</tr>';
+  }
+
+  /* Combined table rows for history categories */
+  function combinedHistRows(label, arr, cat, addFn) {
+    if (!arr || arr.length === 0) {
+      return '<tr>'
+        +'<td style="padding:5px 7px;font-size:10px;font-weight:700;color:var(--muted);background:var(--bg);white-space:nowrap">'+label+'</td>'
+        +'<td colspan="10" style="padding:5px 8px;font-size:10px;color:var(--sub)">—</td>'
+        +'</tr>';
+    }
+    var html2 = '';
+    for (var i2 = 0; i2 < arr.length; i2++) {
+      var r = arr[i2];
+      html2 += '<tr>'
+        +'<td style="padding:3px 7px;font-size:10px;font-weight:700;color:var(--muted);background:var(--bg);white-space:nowrap">'+(i2===0?label:'')+'</td>'
+        +'<td><input data-hist="'+cat+'.'+i2+'.segments" value="'+esc(r.segments||'')+'" oninput="doCollect()" style="min-width:60px"></td>'
+        +'<td><select data-hist="'+cat+'.'+i2+'.side" onchange="doCollect()" style="min-width:42px"><option value="">—</option>'
+        +'<option'+(r.side==='lt'?' selected':'')+'>lt</option><option'+(r.side==='rt'?' selected':'')+'>rt</option><option'+(r.side==='bil'?' selected':'')+'>bil</option></select></td>'
+        +'<td><input data-hist="'+cat+'.'+i2+'.location" value="'+esc(r.location||'')+'" oninput="doCollect()" style="min-width:52px"></td>'
+        +'<td style="background:var(--bg)"></td>'  /* Duration — blank for history */
+        +'<td style="background:var(--bg)"></td>'  /* Traumatic — blank */
+        +'<td style="background:var(--bg)"></td>'  /* VRS — blank */
+        +'<td style="background:var(--bg)"></td>'  /* Rec — blank */
+        +'<td><input data-hist="'+cat+'.'+i2+'.painful" value="'+esc(r.painful||'')+'" oninput="doCollect()" style="min-width:76px"></td>'
+        +'<td><input data-hist="'+cat+'.'+i2+'.diagnosis" value="'+esc(r.diagnosis||'')+'" oninput="doCollect()" style="min-width:68px"></td>'
+        +'<td><input data-hist="'+cat+'.'+i2+'.monthYear" value="'+esc(r.monthYear||'')+'" oninput="doCollect()" style="min-width:58px"></td>'
+        +'</tr>';
+    }
+    return html2;
+  }
+
+  /* ── PV CC's & CF's combined rows
+     New order per request: CF's = AN-ME | RE-LA | AN-LA | RE-ME
+     CC's = AN RE IR ER ME LA
+  */
+  var pvCHtml='';
+  var pvKeys=[
+    /* RIGHT CF's — new order */ 'r_cf_anme','r_cf_rela','r_cf_anla','r_cf_reme',
+    /* RIGHT CC's */              'r_cc_an','r_cc_re','r_cc_ir','r_cc_er','r_cc_me','r_cc_la',
+    /* LEFT CF's  — new order */ 'l_cf_anme','l_cf_rela','l_cf_anla','l_cf_reme',
+    /* LEFT CC's  */              'l_cc_an','l_cc_re','l_cc_ir','l_cc_er','l_cc_me','l_cc_la'
+  ];
+  /* Cell colour class per column index (0-based, after date+seg) */
+  /* Cell classes: only the first Left column needs the divider; all cells are white */
+  var pvColCls=['','','','','','','','','','','pv-div','','','','','','','','',''];
+  for(var i=0;i<pvC.length;i++){
+    var r=pvC[i];
+    pvCHtml+='<tr>';
+    pvCHtml+='<td><input data-pvc="'+i+'.date" value="'+esc(r.date||'')+'" oninput="doCollect()"></td>';
+    pvCHtml+='<td><input data-pvc="'+i+'.seg" value="'+esc(r.seg||'')+'" oninput="doCollect()"></td>';
+    for(var k=0;k<pvKeys.length;k++) pvCHtml+='<td class="'+pvColCls[k]+'"><input data-pvc="'+i+'.'+pvKeys[k]+'" value="'+esc(r[pvKeys[k]]||'')+'" oninput="doCollect()"></td>';
+    pvCHtml+='<td style="width:22px;padding:1px"><button type="button" onclick="delPVC('+i+')" style="border:none;background:transparent;cursor:pointer;color:var(--r);font-size:15px;line-height:1;padding:2px">×</button></td>';
+    pvCHtml+='</tr>';
+  }
+  var pvFHtml='';
+
+  return '<form id="ptForm" onsubmit="return false">'
+
+  /* 1. Segment assessment — FM only */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E0F2FE">🔵</div>'
+  +'<div><div class="ct">Segment assessment — Stecco FM</div></div>'
+  +'<button type="button" onclick="addSeg()" style="padding:5px 10px;border-radius:8px;border:1.5px solid var(--brd);background:var(--card);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;margin-left:auto">＋ Add</button>'
+  +'</div><div class="cb"><div style="overflow-x:auto">'
+  +'<table class="fm-t"><thead><tr>'
+  +'<th style="min-width:68px">Segment</th>'
+  +'<th style="min-width:44px">Side</th>'
+  +'<th style="min-width:56px">Location</th>'
+  +'<th style="min-width:52px">Duration</th>'
+  +'<th style="min-width:42px">Traum?</th>'
+  +'<th style="min-width:44px">VRS</th>'
+  +'<th style="min-width:38px">Rec</th>'
+  +'<th style="min-width:90px">Painful movements</th>'
+  +'</tr></thead><tbody>'
+  +(segHtml||'<tr><td colspan="8" style="padding:12px;text-align:center;color:var(--muted);font-size:11px">No segments — tap ＋ Add</td></tr>')
+  +'</tbody></table>'
+  +'</div></div></div>'
+
+  /* 2. History — separate card */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">📜</div>'
+  +'<div><div class="ct">History</div><div class="cs">Pa Prev / Trauma / Surgery — tap ＋ to add rows</div></div>'
+  +'</div><div class="cb"><div style="overflow-x:auto">'
+  +'<table class="hist-t"><thead><tr>'
+  +'<th style="min-width:72px"></th>'
+  +'<th>Segments</th><th>Month / Year</th><th>Diagnosis / Condition</th><th>Recovery duration</th><th style="width:24px"></th>'
+  +'</tr></thead><tbody>'
+  + histSection('Pa Prev', hPP, 'pp', 'addHistPP')
+  + histSection('Trauma',  hTR, 'tr', 'addHistTR')
+  + histSection('Surgery', hSU, 'su', 'addHistSU')
+  +'</tbody></table>'
+  +'</div>'
+  +'<hr class="div"><div class="fld"><label>Additional history notes</label>'+ft('fm.historyNotes',fm.historyNotes||'','Further details, relevant past conditions...',68)+'</div>'
+  +'</div></div>'
+
+  /* 3+4. Palpation verification — CC's & CF's (unified table per image) */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#EEEDFE">📐</div>'
+  +'<div><div class="ct">Palpation verification — CC\'s &amp; CF\'s</div>'
+  +'</div>'
+  +'<button type="button" onclick="addPVC()" style="padding:5px 10px;border-radius:8px;border:1.5px solid var(--brd);background:var(--card);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;margin-left:auto">＋ Row</button>'
+  +'</div><div class="cb"><div style="overflow-x:auto">'
+  +'<table class="pv-t"><thead>'
+  /* Row 1: DATE | SEGMENTS | RIGHT (10) | LEFT (10) | × */
+  +'<tr>'
+  +'<th rowspan="3" style="text-align:left;padding:4px 6px;min-width:46px">Date</th>'
+  +'<th rowspan="3" style="text-align:left;padding:4px 6px;min-width:40px">Seg</th>'
+  +'<th colspan="10" class="pv-r">RIGHT</th>'
+  +'<th colspan="10" class="pv-l pv-div">LEFT</th>'
+  +'<th rowspan="3" style="width:22px"></th>'
+  +'</tr>'
+  /* Row 2: CF's (4) | CC's (6) × 2 sides */
+  +'<tr>'
+  +'<th colspan="4" class="pv-cf">CF\'s</th>'
+  +'<th colspan="6" class="pv-cc">CC\'s</th>'
+  +'<th colspan="4" class="pv-cf pv-div">CF\'s</th>'
+  +'<th colspan="6" class="pv-cc">CC\'s</th>'
+  +'</tr>'
+  /* Row 3: AM RL AL RM | An Re Ir Er Me La (× 2) */
+  +'<tr>'
+  +'<th class="pv-cf" style="min-width:38px">AM</th><th class="pv-cf" style="min-width:38px">RL</th><th class="pv-cf" style="min-width:38px">AL</th><th class="pv-cf" style="min-width:38px">RM</th>'
+  +'<th class="pv-cc" style="min-width:34px">An</th><th class="pv-cc" style="min-width:34px">Re</th><th class="pv-cc" style="min-width:34px">Ir</th><th class="pv-cc" style="min-width:34px">Er</th><th class="pv-cc" style="min-width:34px">Me</th><th class="pv-cc" style="min-width:34px">La</th>'
+  +'<th class="pv-cf pv-div" style="min-width:38px">AM</th><th class="pv-cf" style="min-width:38px">RL</th><th class="pv-cf" style="min-width:38px">AL</th><th class="pv-cf" style="min-width:38px">RM</th>'
+  +'<th class="pv-cc" style="min-width:34px">An</th><th class="pv-cc" style="min-width:34px">Re</th><th class="pv-cc" style="min-width:34px">Ir</th><th class="pv-cc" style="min-width:34px">Er</th><th class="pv-cc" style="min-width:34px">Me</th><th class="pv-cc" style="min-width:34px">La</th>'
+  +'</tr>'
+  +'</thead><tbody>'
+  +(pvCHtml||'<tr><td colspan="23" style="padding:12px;text-align:center;color:var(--muted);font-size:11px">No rows — tap ＋ Row</td></tr>')
+  +'</tbody></table></div></div></div>'
+
+  /* 5. Hypothesis */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#EEEDFE">💡</div>'
+  +'<div><div class="ct">Hypothesis — sequence &amp; diagonal</div><div class="cs">Which CCs to treat · plane sequence · diagonal · reasoning</div></div>'
+  +'</div><div class="cb">'
+  +'<div class="g2">'
+  +'<div class="fld"><label>Sequence</label>'+fi('fm.hypSequence',fm.hypSequence||'','AN-CL → AN-HU → AN-SC...')+'</div>'
+  +'<div class="fld"><label>Diagonal</label>'+fi('fm.hypDiagonal',fm.hypDiagonal||'','AN-LA rt, RE-ME lt...')+'</div>'
+  +'</div>'
+  +'<div class="fld"><label>Reasoning</label>'+ft('fm.hypothesis',fm.hypothesis||'','Clinical reasoning — why this sequence, density findings, patient presentation...',90)+'</div>'
+  +'</div></div>'
+
+  /* 6. Mo/Ve · Pa/Ve · Treatment notes */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E1F5EE">📝</div><div><div class="ct">Mo/Ve · Pa/Ve · Treatment notes</div></div></div><div class="cb">'
+  +'<div class="g2"><div class="fld"><label>Mo/Ve — movement verification</label>'+ft('fm.moveVerify',fm.moveVerify||'','',68)+'</div>'
+  +'<div class="fld"><label>Pa/Ve — palpation verification</label>'+ft('fm.palpVerify',fm.palpVerify||'','',68)+'</div></div>'
+  +'<div class="fld"><label>Treatment notes</label>'+ft('fm.treatmentNotes',fm.treatmentNotes||'','Points treated, technique, response...',80)+'</div>'
+  +'</div></div>'
+  +'</form>';
+}
+
+function addSeg(){if(!CUR)return;doCollect();var v=CUR.visits[CV];if(!v.fm.segments)v.fm.segments=[];v.fm.segments.push({});sv();renderTab('fm');}
+function delSeg(i){if(!CUR)return;doCollect();var v=CUR.visits[CV];v.fm.segments.splice(i,1);sv();renderTab('fm');}
+function addPVC(){if(!CUR)return;doCollect();var v=CUR.visits[CV];if(!v.fm.pvCoord)v.fm.pvCoord=[];v.fm.pvCoord.push({});sv();renderTab('fm');}
+function delPVC(i){if(!CUR)return;doCollect();var v=CUR.visits[CV];v.fm.pvCoord.splice(i,1);sv();renderTab('fm');}
+function addPVF(){if(!CUR)return;doCollect();var v=CUR.visits[CV];if(!v.fm.pvFusion)v.fm.pvFusion=[];v.fm.pvFusion.push({});sv();renderTab('fm');}
+function delPVF(i){if(!CUR)return;doCollect();var v=CUR.visits[CV];v.fm.pvFusion.splice(i,1);sv();renderTab('fm');}
+function addHistPP(){if(!CUR)return;doCollect();var v=CUR.visits[CV];if(!v.fm.histPaPrev)v.fm.histPaPrev=[];v.fm.histPaPrev.push({});sv();renderTab('fm');}
+function delHistPP(i){if(!CUR)return;doCollect();var v=CUR.visits[CV];v.fm.histPaPrev.splice(i,1);sv();renderTab('fm');}
+function addHistTR(){if(!CUR)return;doCollect();var v=CUR.visits[CV];if(!v.fm.histTrauma)v.fm.histTrauma=[];v.fm.histTrauma.push({});sv();renderTab('fm');}
+function delHistTR(i){if(!CUR)return;doCollect();var v=CUR.visits[CV];v.fm.histTrauma.splice(i,1);sv();renderTab('fm');}
+function addHistSU(){if(!CUR)return;doCollect();var v=CUR.visits[CV];if(!v.fm.histSurgery)v.fm.histSurgery=[];v.fm.histSurgery.push({});sv();renderTab('fm');}
+function delHistSU(i){if(!CUR)return;doCollect();var v=CUR.visits[CV];v.fm.histSurgery.splice(i,1);sv();renderTab('fm');}
+
+/* ─── MSK ─── */
+function rMSK(v) {
+  var m=v.msk||{};
+  var rf=v.msk.redFlags||{};
+  var rfList=[
+    ['neurological','Neurological signs (numbness, weakness, bladder/bowel)'],
+    ['weightLoss','Unexplained weight loss'],
+    ['fever','Fever / systemic illness'],
+    ['trauma','Recent significant trauma'],
+    ['cancer','History of cancer'],
+    ['nightPain','Night pain / constant pain unrelated to movement'],
+    ['caudalEquina','Cauda equina symptoms'],
+  ];
+  var rfHtml='<div style="display:flex;flex-direction:column;gap:6px">';
+  for(var ri=0;ri<rfList.length;ri++){
+    var rfKey=rfList[ri][0]; var rfLabel=rfList[ri][1];
+    var isChecked=(rf[rfKey]==='1');
+    /* iOS fix: use div+onclick, not label+input+onchange */
+    rfHtml+='<div onclick="toggleRedFlag(\''+rfKey+'\')" style="display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;border:1.5px solid '+(isChecked?'#E24B4A':'var(--brd)')+';background:'+(isChecked?'#FCEBEB':'var(--card)')+';cursor:pointer;-webkit-tap-highlight-color:transparent">'
+        +'<div style="width:22px;height:22px;border-radius:6px;border:2px solid '+(isChecked?'#A32D2D':'var(--brd)')+';background:'+(isChecked?'#A32D2D':'transparent')+';display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+        +(isChecked?'<span style="color:#fff;font-weight:800;font-size:13px;line-height:1">✓</span>':'')+'</div>'
+        +'<span style="font-size:12px;font-weight:500;color:'+(isChecked?'#7A1A1A':'var(--text)')+'">'+rfLabel+'</span>'
+        +'</div>';
+  }
+  rfHtml+='</div>';
+  return '<form id="ptForm" onsubmit="return false">'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FCEBEB">🚩</div>'
+  +'<div><div class="ct">Red flag screening</div><div class="cs">Check any that apply — document and consider referral</div></div></div><div class="cb">'
+  +rfHtml
+  +'<div class="fld" style="margin-top:10px"><label>Red flag notes / referral action</label>'
+  +ft('msk.redFlagNotes',m.redFlagNotes,'Document findings and action taken...',60)+'</div>'
+  +'</div></div>'
+  +'<div class="inote">Assessment notes — fill in what is relevant for this patient.</div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">👁</div><div><div class="ct">Observation</div></div></div><div class="cb"><div class="fld">'+ft('msk.observation',m.observation,'Posture, alignment, gait, asymmetry, muscle wasting...',110)+'</div></div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E0F2FE">🔄</div><div><div class="ct">Active & passive ROM</div></div></div><div class="cb"><div class="fld">'+ft('msk.rom',m.rom,'Range, quality, pain arc, end feel, overpressure response...',130)+'</div></div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FCEBEB">🖐</div><div><div class="ct">Palpation / tenderness</div></div></div><div class="cb"><div class="fld">'+ft('msk.palpation',m.palpation,'Trigger points, tenderness, tone, temperature...',110)+'</div></div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#EEEDFE">🔬</div><div><div class="ct">Special tests</div></div></div><div class="cb"><div class="fld">'+ft('msk.specialTests',m.specialTests,'Test name · result · interpretation...',110)+'</div></div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">📏</div><div><div class="ct">Outcome measures</div><div class="cs">Standardised scores, functional tests, questionnaires</div></div></div><div class="cb"><div class="fld">'+ft('msk.outcomeMeasures',m.outcomeMeasures,'e.g. NPRS, DASH, PSFS, ODI, KOOS, ASES, FABQ — include score and date...',120)+'</div></div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E1F5EE">🎯</div><div><div class="ct">Diagnosis / differential</div></div></div><div class="cb"><div class="fld">'+ft('msk.diagnosis',m.diagnosis,'Working diagnosis, differentials...',110)+'</div></div></div>'
+  +'</form>';
+}
+
+/* ─── VM ─── */
+/* Organ list: abdomen only, no thorax/pelvis */
+var VM_ORGANS = [
+  {key:'stomach',       name:'Stomach',             ico:'🟡', color:'#FAEEDA'},
+  {key:'duodenum',      name:'Duodenum',            ico:'🟠', color:'#FAEEDA'},
+  {key:'jejunum',       name:'Jejunum',             ico:'🟤', color:'#FAEEDA'},
+  {key:'ileum',         name:'Ileum',               ico:'🟤', color:'#FAEEDA'},
+  {key:'cecum',         name:'Caecum',              ico:'🟢', color:'#E1F5EE'},
+  {key:'ascColon',      name:'Ascending colon',     ico:'🟢', color:'#E1F5EE'},
+  {key:'transColon',    name:'Transverse colon',    ico:'🟢', color:'#E1F5EE'},
+  {key:'descColon',     name:'Descending colon',    ico:'🟢', color:'#E1F5EE'},
+  {key:'sigColon',      name:'Sigmoid colon',       ico:'🟢', color:'#E1F5EE'},
+  {key:'liver',         name:'Liver',               ico:'🟤', color:'#FAEEDA'},
+  {key:'gallbladder',   name:'Gallbladder',         ico:'💛', color:'#FAEEDA'},
+  {key:'pancreas',      name:'Pancreas',            ico:'🔴', color:'#FCEBEB'},
+  {key:'spleen',        name:'Spleen',              ico:'🔴', color:'#FCEBEB'},
+  {key:'peritoneum',    name:'Peritoneum',          ico:'🫧', color:'#E0F2FE'},
+  {key:'omentum',       name:'Omentum',             ico:'🫧', color:'#E0F2FE'},
+  {key:'kidneyR',       name:'Kidney — right',      ico:'🫘', color:'#E1F5EE'},
+  {key:'kidneyL',       name:'Kidney — left',       ico:'🫘', color:'#E1F5EE'},
+];
+
+function rVM(v) {
+  var vm = v.vm || {organs:{}};
+  var sel = vm.selectedOrgan || '';
+
+  /* Build organ name map for display */
+  var orgMap = {};
+  for (var oi = 0; oi < VM_ORGANS.length; oi++) orgMap[VM_ORGANS[oi].key] = VM_ORGANS[oi].name;
+
+  /* Organ dropdown options */
+  var orgOpts = '<option value="">— Select organ —</option>';
+  for (var oi = 0; oi < VM_ORGANS.length; oi++) {
+    orgOpts += '<option value="'+VM_ORGANS[oi].key+'"'+(sel===VM_ORGANS[oi].key?' selected':'')+'>'+VM_ORGANS[oi].name+'</option>';
+  }
+
+  /* Selected organ detail panel */
+  var orgPanel = '';
+  if (sel && orgMap[sel]) {
+    var d = (vm.organs && vm.organs[sel]) ? vm.organs[sel] : {};
+    orgPanel =
+      '<div class="card" style="border-color:var(--bm)">'
+      +'<div class="ch" style="background:var(--bl)"><div class="ci" style="background:#fff">🔍</div>'
+      +'<div><div class="ct" style="color:var(--b)">'+orgMap[sel]+'</div><div class="cs">Organ assessment</div></div></div>'
+      +'<div class="cb">'
+      /* Row 1: Tenderness + Mobility + Motility */
+      +'<div class="g3" style="margin-bottom:10px">'
+      +'<div class="fld"><label>Tenderness</label>'
+      +'<select data-vm="'+sel+'.tender" onchange="doCollect()"><option value="">—</option>'
+      +'<option'+(d.tender==='None'?' selected':'')+'>None</option>'
+      +'<option'+(d.tender==='Mild'?' selected':'')+'>Mild</option>'
+      +'<option'+(d.tender==='Moderate'?' selected':'')+'>Moderate</option>'
+      +'<option'+(d.tender==='Severe'?' selected':'')+'>Severe</option></select></div>'
+      +'<div class="fld"><label>Mobility</label>'
+      +'<select data-vm="'+sel+'.mobility" onchange="doCollect()"><option value="">—</option>'
+      +'<option'+(d.mobility==='Normal'?' selected':'')+'>Normal</option>'
+      +'<option'+(d.mobility==='Reduced'?' selected':'')+'>Reduced</option>'
+      +'<option'+(d.mobility==='Fixed'?' selected':'')+'>Fixed</option>'
+      +'<option'+(d.mobility==='Hypermobile'?' selected':'')+'>Hypermobile</option></select></div>'
+      +'<div class="fld"><label>Motility</label>'
+      +'<select data-vm="'+sel+'.motility" onchange="doCollect()"><option value="">—</option>'
+      +'<option'+(d.motility==='Normal'?' selected':'')+'>Normal</option>'
+      +'<option'+(d.motility==='Reduced'?' selected':'')+'>Reduced</option>'
+      +'<option'+(d.motility==='Absent'?' selected':'')+'>Absent</option>'
+      +'<option'+(d.motility==='Irregular'?' selected':'')+'>Irregular</option></select></div>'
+      +'</div>'
+      /* Row 2: Findings */
+      +'<div class="fld" style="margin-bottom:10px"><label>Findings</label>'
+      +'<textarea data-vm="'+sel+'.findings" oninput="doCollect()" style="min-height:72px" placeholder="Palpation findings, tissue quality, restriction pattern, ptosis, adhesion, fixation...">'+esc(d.findings||'')+'</textarea></div>'
+      /* Row 3: MSK correlation */
+      +'<div class="fld"><label>MSK correlation (joint / fascial segment)</label>'
+      +'<textarea data-vm="'+sel+'.mskCorr" oninput="doCollect()" style="min-height:52px">'+esc(d.mskCorr||'')+'</textarea></div>'
+      +'</div></div>';
+
+
+  }
+
+  /* Summary chips — organs that have been assessed */
+  var chips = '';
+  for (var oi = 0; oi < VM_ORGANS.length; oi++) {
+    var ok = VM_ORGANS[oi].key;
+    var od = vm.organs && vm.organs[ok];
+    if (od && (od.mobility || od.motility || od.findings || od.technique || od.response)) {
+      chips += '<span onclick="selectVMOrgan(\''+ok+'\')" style="display:inline-block;margin:2px 4px 2px 0;padding:3px 9px;border-radius:20px;background:var(--tlL);color:var(--tl);font-size:10px;font-weight:600;cursor:pointer">'+VM_ORGANS[oi].name+'</span>';
+    }
+  }
+
+  return '<form id="ptForm" onsubmit="return false">'
+
+  /* 1. Internal dysfunctions / symptoms — TOP */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FCEBEB">🩺</div>'
+  +'<div><div class="ct">Internal dysfunctions / symptoms</div></div></div><div class="cb">'
+  +'<div class="fld">'+ft('vm.internalDysf',vm.internalDysf||'','Bloating, constipation, acid reflux, dysmenorrhoea, IBS, nausea, urinary symptoms...',90)+'</div>'
+  +'</div></div>'
+
+  /* 2. Global listening */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E1F5EE">🌐</div>'
+  +'<div><div class="ct">General listening</div></div></div><div class="cb">'
+  +'<div class="fld">'+ft('vm.globalListening',vm.globalListening||'','Direction of fall / pull, body area attracted to, quality of movement...',80)+'</div>'
+  +'</div></div>'
+
+  /* 3. Local listening */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E0F2FE">👐</div>'
+  +'<div><div class="ct">Local listening</div></div></div><div class="cb">'
+  +'<div class="fld">'+ft('vm.localListening',vm.localListening||'','Local pull direction, tissue texture, fixation pattern, listening sequence...',80)+'</div>'
+  +'</div></div>'
+
+  /* 4. Organ selector */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#EEEDFE">🫁</div>'
+  +'<div><div class="ct">Organ assessment</div><div class="cs">Select organ to assess</div></div></div><div class="cb">'
+  +(chips?'<div style="margin-bottom:10px"><div style="font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px">Assessed</div>'+chips+'</div>':'')
+  +'<div class="fld"><label>Select organ</label>'
+  +'<select data-f="vm.selectedOrgan" onchange="doCollect();renderTab(\'vm\')">'
+  +orgOpts
+  +'</select></div>'
+  +'</div></div>'
+  + orgPanel
+
+  /* 5. Technique applied — general for session */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E1F5EE">🙌</div>'
+  +'<div><div class="ct">Technique applied</div><div class="cs">Overall VM session — all organs treated</div></div></div><div class="cb">'
+  +'<div class="fld">'+ft('vm.technique',vm.technique||'','Mobility techniques, induction, recoil, direct/indirect, combined listening, areas treated...',110)+'</div>'
+  +'</div></div>'
+
+  /* 6. Post-session response — general */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">📊</div>'
+  +'<div><div class="ct">Post-session response</div><div class="cs">Overall patient response to VM session</div></div></div><div class="cb">'
+  +'<div class="fld">'+ft('vm.sessionResponse',vm.sessionResponse||'','Immediate response, tissue changes, patient feedback, autonomic response, plan...',100)+'</div>'
+  +'</div></div>'
+
+  /* 7. Additional notes */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">📝</div><div><div class="ct">Additional notes</div></div></div><div class="cb">'
+  +'<div class="fld">'+ft('vm.notes',vm.notes||'','Overall impression, treatment plan, referral...',80)+'</div>'
+  +'</div></div>'
+  +'</form>';
+}
+
+function selectVMOrgan(key) {
+  if (!CUR) return;
+  doCollect();
+  var v = CUR.visits[CV];
+  if (!v.vm) v.vm = {organs:{}};
+  v.vm.selectedOrgan = key;
+  sv();
+  renderTab('vm');
+}
+
+/* ─── CST ─── */
+function rCST(v) {
+  var c = v.cst || {};
+  return '<form id="ptForm" onsubmit="return false">'
+
+  /* 1. Initial assessment */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#EEEDFE">🧠</div>'
+  +'<div><div class="ct">Craniosacral assessment — Upledger</div></div></div><div class="cb">'
+  +'<div class="g2">'
+  +'<div class="fld"><label>CR rate (cycles/min)</label>'+fi('cst.crRate',c.crRate,'Normal 6–12')+'</div>'
+  +'<div class="fld"><label>CR quality</label>'+fsel('cst.crQuality',c.crQuality||'',['Strong & symmetric','Weak','Asymmetric','Irregular','Absent'])+'</div>'
+  +'<div class="fld"><label>Still point — type</label>'+fsel('cst.stillPointType',c.stillPointType||'',['Spontaneous','CV4 induced','EV4','None'])+'</div>'
+  +'<div class="fld"><label>Still point — response</label>'+fi('cst.stillPointResp',c.stillPointResp,'Quality, depth, duration...')+'</div>'
+  +'</div>'
+  +'</div></div>'
+
+  /* 2. Cranial assessment */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#EEEDFE">💀</div>'
+  +'<div><div class="ct">Cranial bone assessment</div></div></div><div class="cb">'
+  +'<div class="g2">'
+  +'<div class="fld"><label>Sagittal suture</label>'+fi('cst.sagittalSuture',c.sagittalSuture,'Mobile / Restricted / Direction')+'</div>'
+  +'<div class="fld"><label>Coronal suture</label>'+fi('cst.coronalSuture',c.coronalSuture)+'</div>'
+  +'<div class="fld"><label>Lambdoid suture</label>'+fi('cst.lambdoidSuture',c.lambdoidSuture)+'</div>'
+  +'<div class="fld"><label>Sphenobasilar synchondrosis</label>'+fsel('cst.sphenobasilar',c.sphenobasilar||'',['Neutral','Flexion bias','Extension bias','Side-bending R','Side-bending L','Torsion R','Torsion L','Vertical strain','Lateral strain','Compression'])+'</div>'
+  +'<div class="fld"><label>Temporal bones</label>'+fi('cst.temporals',c.temporals,'IR/ER symmetry, restriction pattern...')+'</div>'
+  +'<div class="fld"><label>Frontal bone</label>'+fi('cst.frontal',c.frontal)+'</div>'
+  +'<div class="fld"><label>Parietals</label>'+fi('cst.parietals',c.parietals)+'</div>'
+  +'<div class="fld"><label>Occiput</label>'+fi('cst.occiput',c.occiput)+'</div>'
+  +'</div>'
+  +'</div></div>'
+
+  /* 3. Dural / sacral */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E1F5EE">🔗</div>'
+  +'<div><div class="ct">Dural tube &amp; sacrum</div></div></div><div class="cb">'
+  +'<div class="g2">'
+  +'<div class="fld"><label>Dural tube mobility</label>'+fi('cst.dural',c.dural,'Restrictions, pull direction, level...')+'</div>'
+  +'<div class="fld"><label>Sacral motion</label>'+fsel('cst.sacrum',c.sacrum||'',['Normal','Flexion restricted','Extension restricted','Torsion R','Torsion L','Anterior restriction','Posterior restriction'])+'</div>'
+  +'<div class="fld"><label>SBS–sacral relationship</label>'+fi('cst.sbsSacral',c.sbsSacral,'Correlated pattern, core link...')+'</div>'
+  +'<div class="fld"><label>CV4 application</label>'+fsel('cst.cv4',c.cv4||'',['Not applied','Applied — still point achieved','Applied — partial response','Applied — no response'])+'</div>'
+  +'</div>'
+  +'</div></div>'
+
+  /* 4. TMJ assessment */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FCEBEB">🦷</div>'
+  +'<div><div class="ct">TMJ assessment</div><div class="cs">Temporomandibular joint — frequently relevant in cranial &amp; headache work</div></div></div><div class="cb">'
+  +'<div class="g3">'
+  +'<div class="fld"><label>Opening range (mm)</label>'+fi('cst.tmjOpen',c.tmjOpen||'','Normal 40–55mm')+'</div>'
+  +'<div class="fld"><label>Deviation on opening</label>'+fsel('cst.tmjDeviation',c.tmjDeviation||'',['None','Right','Left','S-pattern'])+'</div>'
+  +'<div class="fld"><label>End feel</label>'+fsel('cst.tmjEndFeel',c.tmjEndFeel||'',['Normal capsular','Hard/bony','Soft tissue','Empty/painful'])+'</div>'
+  +'<div class="fld"><label>Click / crepitus</label>'+fsel('cst.tmjClick',c.tmjClick||'',['None','Click on opening','Click on closing','Reciprocal click','Crepitus'])+'</div>'
+  +'<div class="fld"><label>Pain on palpation</label>'+fsel('cst.tmjPain',c.tmjPain||'',['None','Mild','Moderate','Severe'])+'</div>'
+  +'<div class="fld"><label>Masseter / pterygoid tension</label>'+fsel('cst.tmjMuscle',c.tmjMuscle||'',['None','Mild','Moderate','Severe'])+'</div>'
+  +'</div>'
+  +'<div class="fld"><label>TMJ notes</label>'+ft('cst.tmjNotes',c.tmjNotes||'','Temporal bone IR/ER relationship, occlusion, bruxism, headache pattern...',68)+'</div>'
+  +'</div></div>'
+
+  /* 5. Techniques & response */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">🙌</div>'
+  +'<div><div class="ct">Techniques applied</div></div></div><div class="cb">'
+  +'<div class="fld"><label>Techniques used this session</label>'
+  +ft('cst.techniques',c.techniques||'','CV4, EV4, frontal lift, parietal lift, sphenoid decompression, temporal rock, sacral release, dural tube traction, unwinding, energy cysts, SER...',100)+'</div>'
+  +'<div class="fld" style="margin-top:10px"><label>Unwinding / energy cyst findings</label>'
+  +ft('cst.unwinding',c.unwinding||'','Location, pattern, resolution...',72)+'</div>'
+  +'</div></div>'
+
+  /* 6. Session response & plan */
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E0F2FE">📝</div>'
+  +'<div><div class="ct">Session response & plan</div></div></div><div class="cb">'
+  +'<div class="fld"><label>Patient response during session</label>'
+  +ft('cst.sessionResponse',c.sessionResponse||'','Emotional release, physical changes, verbal feedback...',80)+'</div>'
+  +'<div class="fld" style="margin-top:10px"><label>Post-session notes & plan</label>'
+  +ft('cst.notes',c.notes||'','Changes after session, plan for next visit, home advice...',80)+'</div>'
+  +'</div></div>'
+
+  +'</form>';
+}
+
+/* ─── TREATMENT ─── */
+function rTreatment(v) {
+  var t=v.treatment||{};
+  var visitIdx = CV;
+  return '<form id="ptForm" onsubmit="return false">'
+  +(visitIdx>0?'<div class="card" style="border-color:var(--bm)"><div class="ch" style="background:var(--bl)"><div class="ci" style="background:#fff">🔁</div><div><div class="ct" style="color:var(--b)">Follow-up #'+visitIdx+'</div><div class="cs">Changes since last visit — new findings, new segments, patient response</div></div></div><div class="cb">'
+  +'<div class="g2"><div class="fld"><label>Session no.</label><input data-f="treatment.sessionNumber" value="'+esc(t.sessionNumber||'')+'" oninput="doCollect()" type="text" placeholder="e.g. 3 of 6"></div>'
+  +'<div class="fld"><label>Response since last session</label>'+fi('treatment.followUp',t.followUp,'Better / worse / same — patient report...')+'</div></div>'
+  +'</div></div>':'')
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E1F5EE">💆</div><div><div class="ct">Treatment</div></div></div><div class="cb"><div class="fld">'+ft('treatment.treatment',t.treatment,'Techniques used, points treated, methods applied...',160)+'</div></div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E0F2FE">🏋️</div><div><div class="ct">Exercise program</div></div></div><div class="cb"><div class="fld">'+ft('treatment.exerciseProgram',t.exerciseProgram,'Exercises, sets, reps, progression...',160)+'</div></div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">💬</div><div><div class="ct">Advice</div></div></div><div class="cb"><div class="fld">'+ft('treatment.advice',t.advice,'Postural advice, activity modification...',100)+'</div></div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">🌿</div><div><div class="ct">Lifestyle &amp; adjunct recommendations</div><div class="cs">Sleep, nutrition, stress, breathing, adjunct therapies</div></div></div><div class="cb">'
+  +'<div class="fld">'+ft('treatment.lifestyle',t.lifestyle,'Sleep hygiene, anti-inflammatory diet, stress management, breathing exercises, yoga, pilates, swimming, dry needling referral, imaging referral...',110)+'</div>'
+  +'</div></div>'
+  +'</form>';
+}
+
+/* ─── FILES ─── */
+function rFiles(v) {
+  var atts=v.attachments||[];
+  var cards='';
+  for(var i=0;i<atts.length;i++){
+    var a=atts[i];
+    cards+='<div class="att-c">'
+      +(a.type&&a.type.indexOf('image/')===0?'<img src="'+a.data+'" alt="'+esc(a.name)+'">':'<div style="height:66px;display:flex;align-items:center;justify-content:center;font-size:24px">📄</div>')
+      +'<div class="att-nm">'+esc(a.name)+'</div>'
+      +'<div class="att-nm" style="color:var(--sub)">'+(a.date||'')+'</div>'
+      +'<div class="att-dl" onclick="removeFile('+i+')">Remove</div>'
+      +'</div>';
+  }
+  return '<form id="ptForm" onsubmit="return false">'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E0F2FE">📎</div><div><div class="ct">Scans, photos & documents</div><div class="cs">Stored in browser only</div></div>'
+  +'<button type="button" onclick="document.getElementById(\'fIn\').click()" style="padding:5px 10px;border-radius:8px;border:1.5px solid var(--brd);background:var(--card);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;margin-left:auto">＋ Upload</button>'
+  +'</div><div class="cb">'
+  +'<input type="file" id="fIn" style="display:none" multiple accept="image/*,.pdf,.doc,.docx" onchange="handleFiles(this)">'
+  +(atts.length?'<div class="att-g">'+cards+'</div>':'<div class="att-em">📁<br>No files — tap Upload</div>')
+  +'</div></div></form>';
+}
+function handleFiles(input){
+  if(!CUR)return;
+  var v=CUR.visits[CV];
+  if(!v.attachments)v.attachments=[];
+  var files=input.files; var total=files.length,done=0;
+  for(var i=0;i<files.length;i++){
+    (function(file){
+      var reader=new FileReader();
+      reader.onload=function(e){
+        v.attachments.push({name:file.name,type:file.type,data:e.target.result,date:new Date().toLocaleDateString()});
+        done++;if(done===total){sv();renderTab('files');}
+      };
+      reader.readAsDataURL(file);
+    })(files[i]);
+  }
+}
+function removeFile(i){if(!CUR)return;CUR.visits[CV].attachments.splice(i,1);sv();renderTab('files');}
+
+/* ─── BILLING ─── */
+function rBilling(v) {
+  var b=v.billing||{items:[],status:'unpaid'};
+  var cur=DB.clinic.currency||'₹';
+  var tax=parseFloat(DB.clinic.taxRate)||0;
+  var sub=0;
+  for(var i=0;i<b.items.length;i++) sub+=(parseFloat(b.items[i].qty)||0)*(parseFloat(b.items[i].rate)||0);
+  var taxAmt=sub*(tax/100); var total=sub+taxAmt;
+  var linesHtml='';
+  for(var i=0;i<b.items.length;i++){
+    var it=b.items[i]; var amt=(parseFloat(it.qty)||0)*(parseFloat(it.rate)||0);
+    linesHtml+='<div class="bl-line">'
+      +'<input data-bl="'+i+'.desc" value="'+esc(it.desc||'')+'" placeholder="Description" oninput="doCollect()" type="text">'
+      +'<input data-bl="'+i+'.qty" value="'+(it.qty||1)+'" type="number" min="0.5" step="0.5" oninput="doCollect()">'
+      +'<input data-bl="'+i+'.rate" value="'+(it.rate||'')+'" type="number" oninput="doCollect()" placeholder="Rate">'
+      +'<input value="'+cur+amt.toFixed(2)+'" readonly style="background:var(--bg);color:var(--muted)">'
+      +'<button type="button" onclick="removeLine('+i+')" style="border:none;background:transparent;cursor:pointer;color:var(--r);font-size:20px;line-height:1;padding:0">×</button>'
+      +'</div>';
+  }
+  var sbcls=b.status==='paid'?'sp':b.status==='partial'?'spt':'su';
+  return '<form id="ptForm" onsubmit="return false">'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#E1F5EE">💳</div><div><div class="ct">Invoice</div></div>'
+  +'<span class="sbadge '+sbcls+'" style="margin-left:auto">'+((b.status||'unpaid').toUpperCase())+'</span>'
+  +'</div><div class="cb">'
+  +'<div class="g3"><div class="fld"><label>Invoice no.</label>'+fi('billing.invoiceNo',b.invoiceNo,'INV-001')+'</div>'
+  +'<div class="fld"><label>Status</label><select data-f="billing.status" onchange="doCollect()"><option value="unpaid"'+(b.status==='unpaid'?' selected':'')+'>Unpaid</option><option value="paid"'+(b.status==='paid'?' selected':'')+'>Paid</option><option value="partial"'+(b.status==='partial'?' selected':'')+'>Partial</option></select></div>'
+  +'<div class="fld"><label>Payment method</label>'+fsel('billing.paymentMethod',b.paymentMethod,['Cash','Card','UPI','Bank transfer','Insurance'])+'</div></div>'
+  +'<div class="g2"><div class="fld"><label>Payment date</label>'+fd('billing.paymentDate',b.paymentDate)+'</div></div>'
+  +'</div></div>'
+  +'<div class="card"><div class="ch"><div class="ci" style="background:#FAEEDA">🧾</div><div><div class="ct">Line items</div></div>'
+  +'<button type="button" onclick="addLine()" style="padding:5px 10px;border-radius:8px;border:1.5px solid var(--brd);background:var(--card);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;margin-left:auto">＋ Add</button>'
+  +'</div><div class="cb">'
+  +'<div style="display:grid;grid-template-columns:minmax(0,2fr) 60px 76px 76px 26px;gap:5px;margin-bottom:6px">'
+  +'<span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Description</span>'
+  +'<span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Qty</span>'
+  +'<span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Rate ('+cur+')</span>'
+  +'<span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Amount</span><span></span>'
+  +'</div>'
+  +(linesHtml||'<div style="font-size:11px;color:var(--muted);padding:8px 0">No items — tap ＋ Add</div>')
+  +'<div class="bl-tot">'
+  +'<div class="btr"><span style="color:var(--muted)">Subtotal</span><span>'+cur+sub.toFixed(2)+'</span></div>'
+  +(tax?'<div class="btr"><span style="color:var(--muted)">'+(DB.clinic.taxLabel||'Tax')+' ('+tax+'%)</span><span>'+cur+taxAmt.toFixed(2)+'</span></div>':'')
+  +'<div class="btr"><span>Total</span><span>'+cur+total.toFixed(2)+'</span></div>'
+  +'</div>'
+  +'<div class="fld" style="margin-top:10px"><label>Notes</label>'+ft('billing.notes',b.notes||'','',52)+'</div>'
+  +'</div></div></form>';
+}
+function addLine(){if(!CUR)return;doCollect();var v=CUR.visits[CV];if(!v.billing)v.billing={items:[]};v.billing.items.push({desc:'',qty:1,rate:''});sv();renderTab('billing');}
+function removeLine(i){if(!CUR)return;doCollect();CUR.visits[CV].billing.items.splice(i,1);sv();renderTab('billing');}
+
+/* ─── PRINT via Blob URL (fixes window.open / document.write errors) ─── */
+function doPrint(type) {
+  if (!CUR) return;
+  var html = (type === 'note') ? buildNoteHTML() : buildBillHTML();
+  var blob = new Blob([html], {type:'text/html'});
+  var url = URL.createObjectURL(blob);
+  var win = window.open(url, '_blank');
+  if (!win) { alert('Please allow pop-ups for this page, then tap the button again.'); URL.revokeObjectURL(url); return; }
+  win.addEventListener('load', function() { URL.revokeObjectURL(url); });
+}
+
+function buildPVTable(pvC) {
+  /* Only print columns that have at least one filled cell across all rows */
+  var allKeys=['r_cf_anme','r_cf_rela','r_cf_anla','r_cf_reme',
+               'r_cc_an','r_cc_re','r_cc_ir','r_cc_er','r_cc_me','r_cc_la',
+               'l_cf_anme','l_cf_rela','l_cf_anla','l_cf_reme',
+               'l_cc_an','l_cc_re','l_cc_ir','l_cc_er','l_cc_me','l_cc_la'];
+  var cfKeys=['r_cf_anme','r_cf_rela','r_cf_anla','r_cf_reme','l_cf_anme','l_cf_rela','l_cf_anla','l_cf_reme'];
+  var colLabels={
+    'r_cf_anme':'AM','r_cf_rela':'RL','r_cf_anla':'AL','r_cf_reme':'RM',
+    'r_cc_an':'An','r_cc_re':'Re','r_cc_ir':'Ir','r_cc_er':'Er','r_cc_me':'Me','r_cc_la':'La',
+    'l_cf_anme':'AM','l_cf_rela':'RL','l_cf_anla':'AL','l_cf_reme':'RM',
+    'l_cc_an':'An','l_cc_re':'Re','l_cc_ir':'Ir','l_cc_er':'Er','l_cc_me':'Me','l_cc_la':'La'
+  };
+  var side={
+    'r_cf_anme':'R','r_cf_rela':'R','r_cf_anla':'R','r_cf_reme':'R',
+    'r_cc_an':'R','r_cc_re':'R','r_cc_ir':'R','r_cc_er':'R','r_cc_me':'R','r_cc_la':'R',
+    'l_cf_anme':'L','l_cf_rela':'L','l_cf_anla':'L','l_cf_reme':'L',
+    'l_cc_an':'L','l_cc_re':'L','l_cc_ir':'L','l_cc_er':'L','l_cc_me':'L','l_cc_la':'L'
+  };
+
+  /* Find which columns have at least one non-empty value */
+  var usedCols=[];
+  for(var ki=0;ki<allKeys.length;ki++){
+    var key=allKeys[ki];
+    for(var ri=0;ri<pvC.length;ri++){
+      if(pvC[ri][key]&&pvC[ri][key].trim()){usedCols.push(key);break;}
+    }
+  }
+  if(!usedCols.length) return '';
+
+  var th='font-size:8px;padding:4px 6px;border:1px solid #cdd;text-align:center;white-space:nowrap;';
+  var td='font-size:11px;padding:4px 6px;border:1px solid #dde;text-align:center;';
+  var hdrCF='background:#e8e6f0;color:#3730A3;font-weight:700;';
+  var hdrCC='background:#e6f0ec;color:#065F46;font-weight:700;';
+  var hdrR='background:#E0E7FF;color:#3730A3;font-weight:800;';
+  var hdrL='background:#D1FAE5;color:#065F46;font-weight:800;';
+
+  /* Build header row: Side label grouped */
+  var rCols=usedCols.filter(function(k){return side[k]==='R';});
+  var lCols=usedCols.filter(function(k){return side[k]==='L';});
+
+  var tbl='<div style="margin-bottom:14px">'
+    +'<div style="font-size:10px;font-weight:700;color:#075985;text-transform:uppercase;letter-spacing:.05em;padding-bottom:4px;border-bottom:1.5px solid #dde2e2;margin-bottom:6px">PV — CC\'s &amp; CF\'s</div>'
+    +'<div style="overflow-x:auto"><table style="border-collapse:collapse;font-size:11px"><thead>';
+
+  /* Row 1: Date | Seg | RIGHT(n) | LEFT(m) */
+  tbl+='<tr>'
+    +'<th style="'+th+'min-width:48px" rowspan="3">Date</th>'
+    +'<th style="'+th+'min-width:48px" rowspan="3">Seg</th>';
+  if(rCols.length) tbl+='<th colspan="'+rCols.length+'" style="'+th+hdrR+'">RIGHT</th>';
+  if(lCols.length) tbl+='<th colspan="'+lCols.length+'" style="'+th+hdrL+'">LEFT</th>';
+  tbl+='</tr>';
+
+  /* Row 2: CF's / CC's grouping */
+  tbl+='<tr>';
+  function addGroupHeaders(cols,hCF,hCC){
+    var i=0;
+    while(i<cols.length){
+      var isCF=cfKeys.indexOf(cols[i])>=0;
+      var j=i+1;
+      while(j<cols.length&&(cfKeys.indexOf(cols[j])>=0)===isCF) j++;
+      var span=j-i;
+      tbl+='<th colspan="'+span+'" style="'+th+(isCF?hCF:hCC)+'">'+(isCF?'CF\'s':'CC\'s')+'</th>';
+      i=j;
+    }
+  }
+  addGroupHeaders(rCols,hdrCF,hdrCC);
+  addGroupHeaders(lCols,hdrCF,hdrCC);
+  tbl+='</tr>';
+
+  /* Row 3: individual column labels */
+  tbl+='<tr>';
+  for(var ci=0;ci<usedCols.length;ci++){
+    var isCF=cfKeys.indexOf(usedCols[ci])>=0;
+    var isLeft=side[usedCols[ci]]==='L';
+    var borderLeft=(ci>0&&isLeft&&side[usedCols[ci-1]]==='R')?'border-left:2px solid #aab;':'';
+    tbl+='<th style="'+th+(isCF?hdrCF:hdrCC)+borderLeft+'">'+colLabels[usedCols[ci]]+'</th>';
+  }
+  tbl+='</tr></thead><tbody>';
+
+  /* Data rows */
+  for(var ri=0;ri<pvC.length;ri++){
+    var r=pvC[ri];
+    tbl+='<tr>'
+      +'<td style="'+td+'font-size:10px">'+escHtml(r.date||'')+'</td>'
+      +'<td style="'+td+'font-size:10px">'+escHtml(r.seg||'')+'</td>';
+    for(var ci=0;ci<usedCols.length;ci++){
+      var isLeft=side[usedCols[ci]]==='L';
+      var borderLeft=(ci>0&&isLeft&&side[usedCols[ci-1]]==='R')?'border-left:2px solid #aab;':'';
+      tbl+='<td style="'+td+borderLeft+'">'+escHtml(r[usedCols[ci]]||'')+'</td>';
+    }
+    tbl+='</tr>';
+  }
+
+  tbl+='</tbody></table></div></div>';
+  return tbl;
+}
+
+function buildNoteHTML() {
+  var v=CUR.visits[CV]; var pi=CUR.info; var cl=DB.clinic;
+  var nrs=v.nrs||{}; var t=v.treatment||{}; var m=v.msk||{};
+  var fm=v.fm||{};
+  var segs=fm.segments||[];
+  var pvC=fm.pvCoord||[];
+
+  function nb(title,content){
+    if(!content)return '';
+    return '<div style="margin-bottom:14px">'
+      +'<div style="font-size:10px;font-weight:700;color:#075985;text-transform:uppercase;letter-spacing:.05em;padding-bottom:4px;border-bottom:1.5px solid #dde2e2;margin-bottom:6px">'+title+'</div>'
+      +'<div style="font-size:12px;line-height:1.7;white-space:pre-wrap">'+escHtml(content)+'</div>'
+      +'</div>';
+  }
+
+  var nrsLine='';
+  var nrsKeys=['current','worst','best','avg'];
+  for(var ki=0;ki<nrsKeys.length;ki++){
+    var k=nrsKeys[ki];
+    if(nrs[k]!==null&&nrs[k]!==undefined) nrsLine+='<span style="margin-right:14px"><b>'+k.charAt(0).toUpperCase()+k.slice(1)+':</b> '+nrs[k]+'/10</span>';
+  }
+
+  var segTbl='';
+  if(segs.length){
+    segTbl='<table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:4px"><thead><tr>'
+      +'<th style="padding:4px 7px;border:1px solid #ddd;background:#eef2f2;text-align:left">Region</th>'
+      +'<th style="padding:4px 7px;border:1px solid #ddd;background:#eef2f2;text-align:left">Side</th>'
+      +'<th style="padding:4px 7px;border:1px solid #ddd;background:#eef2f2;text-align:left">VRS</th>'
+      +'<th style="padding:4px 7px;border:1px solid #ddd;background:#eef2f2;text-align:left">Painful movements</th>'
+      +'</tr></thead><tbody>';
+    for(var i=0;i<segs.length;i++){
+      var s=segs[i];
+      segTbl+='<tr><td style="padding:4px 7px;border:1px solid #ddd">'+escHtml(s.region||'')+'</td>'
+        +'<td style="padding:4px 7px;border:1px solid #ddd">'+escHtml(s.side||'')+'</td>'
+        +'<td style="padding:4px 7px;border:1px solid #ddd">'+escHtml(s.vrs||'')+'</td>'
+        +'<td style="padding:4px 7px;border:1px solid #ddd">'+escHtml(s.painful||'')+'</td></tr>';
+    }
+    segTbl+='</tbody></table>';
+  }
+
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Consultation Note</title>'
+    +'<style>body{font-family:Arial,sans-serif;font-size:12px;color:#1a2020;margin:0}'
+    +'.page{max-width:780px;margin:0 auto;padding:32px}'
+    +'.hdr{display:flex;justify-content:space-between;align-items:flex-start;background:#0C4A6E;border-radius:8px;padding:16px 20px;margin-bottom:20px;color:#fff}'
+    +'.cn{font-size:17px;font-weight:800}.ci{font-size:10px;opacity:.55;margin-top:3px;line-height:1.6}'
+    +'.dt{font-size:13px;font-weight:700;text-align:right}.dm{font-size:10px;opacity:.55;text-align:right;margin-top:3px}'
+    +'.ptb{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;background:#eef2f2;border:1px solid #cdd8d8;border-radius:6px;padding:10px 14px;margin-bottom:18px}'
+    +'.pf{font-size:10px}.pf b{color:#0C4A6E}'
+    +'.sig{display:flex;justify-content:space-between;margin-top:38px}'
+    +'.sl{border-top:1px solid #888;width:200px;padding-top:4px;font-size:9px;color:#555}'
+    +'@media print{.page{padding:18px}}</style>'
+    +'</head><body onload="window.print()"><div class="page">'
+    +'<div class="hdr"><div><div class="cn">'+escHtml(cl.name||'Beyond Mechanics')+'</div>'
+    +'<div class="ci">'+(cl.therapist?'PT: '+escHtml(cl.therapist)+' &middot; ':'')+escHtml(cl.address)+'<br>'+escHtml(cl.phone||'')+' &middot; '+escHtml(cl.email||'')+'</div></div>'
+    +'<div><div class="dt">Consultation Note</div><div class="dm">Date: '+escHtml(v.date||'')+'<br>Visit: '+(CV===0?'Initial':'Follow-up '+CV)+'</div></div></div>'
+    +'<div class="ptb">'
+    +'<div class="pf"><b>Name:</b> '+escHtml(pi.name||'')+'</div>'
+    +'<div class="pf"><b>Age:</b> '+escHtml(pi.age||'')+' '+escHtml(pi.gender||'')+'</div>'
+    +'<div class="pf"><b>Occupation/Sport:</b> '+escHtml(pi.occupation||'')+'</div>'
+    +'</div>'
+    +nb('Chief complaint',v.chiefComplaint)
+    +(nrsLine?'<div style="margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:#075985;text-transform:uppercase;letter-spacing:.05em;padding-bottom:4px;border-bottom:1.5px solid #dde2e2;margin-bottom:6px">Pain scores (NRS)</div><p style="font-size:12px">'+nrsLine+'</p>'+(nrs.notes?'<p style="font-size:11px;color:#555;margin-top:4px">'+escHtml(nrs.notes)+'</p>':'')+'</div>':'')
+    +nb('Observation',m.observation)
+    +nb('Active & passive ROM',m.rom)
+    +nb('Palpation / tenderness',m.palpation)
+    +nb('Special tests',m.specialTests)
+    +nb('Diagnosis / differential',m.diagnosis)
+    +(segs.length?'<div style="margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:#075985;text-transform:uppercase;letter-spacing:.05em;padding-bottom:4px;border-bottom:1.5px solid #dde2e2;margin-bottom:6px">FM Segments</div>'+segTbl+'</div>':'')
+    +((fm.hypSequence||fm.hypDiagonal||fm.hypothesis)?'<div style="margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:#075985;text-transform:uppercase;letter-spacing:.05em;padding-bottom:4px;border-bottom:1.5px solid #dde2e2;margin-bottom:6px">Hypothesis</div>'+(fm.hypSequence?'<p style="font-size:11px;margin-bottom:3px"><b>Sequence:</b> '+escHtml(fm.hypSequence)+'</p>':'')+(fm.hypDiagonal?'<p style="font-size:11px;margin-bottom:3px"><b>Diagonal:</b> '+escHtml(fm.hypDiagonal)+'</p>':'')+(fm.hypothesis?'<p style="font-size:11px;color:#555;margin-top:4px;white-space:pre-wrap">'+escHtml(fm.hypothesis)+'</p>':'')+'</div>':'')
+    +(pvC.length?buildPVTable(pvC):'')
+    +nb('Treatment',t.treatment)
+    +nb('Exercise program',t.exerciseProgram)
+    +nb('Advice',t.advice)
+    +nb('Follow-up',t.followUp)
+    +'<div class="sig"><div class="sl">Therapist signature</div><div class="sl">Date: '+escHtml(v.date||'')+'</div></div>'
+    +'</div></body></html>';
+}
+
+function buildBillHTML() {
+  var v=CUR.visits[CV]; var pi=CUR.info; var cl=DB.clinic;
+  var b=v.billing||{items:[],status:'unpaid'};
+  var cur=cl.currency||'₹';
+  var tax=parseFloat(cl.taxRate)||0;
+  var sub=0;
+  for(var i=0;i<b.items.length;i++) sub+=(parseFloat(b.items[i].qty)||0)*(parseFloat(b.items[i].rate)||0);
+  var taxAmt=sub*(tax/100); var total=sub+taxAmt;
+  var scol=b.status==='paid'?'#085041':b.status==='partial'?'#633806':'#A32D2D';
+  var sbg=b.status==='paid'?'#E1F5EE':b.status==='partial'?'#FAEEDA':'#FCEBEB';
+  var lineRows='';
+  for(var i=0;i<b.items.length;i++){
+    var it=b.items[i]; var amt=(parseFloat(it.qty)||0)*(parseFloat(it.rate)||0);
+    lineRows+='<tr><td style="padding:8px 10px;border-bottom:1px solid #eee">'+escHtml(it.desc||'—')+'</td>'
+      +'<td style="padding:8px 10px;border-bottom:1px solid #eee;text-align:center">'+(it.qty||1)+'</td>'
+      +'<td style="padding:8px 10px;border-bottom:1px solid #eee;text-align:right">'+cur+parseFloat(it.rate||0).toFixed(2)+'</td>'
+      +'<td style="padding:8px 10px;border-bottom:1px solid #eee;text-align:right">'+cur+amt.toFixed(2)+'</td></tr>';
+  }
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Invoice</title>'
+    +'<style>body{font-family:Arial,sans-serif;font-size:12px;color:#1a2020;margin:0}'
+    +'.page{max-width:680px;margin:0 auto;padding:40px}'
+    +'.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px}'
+    +'.cn{font-size:19px;font-weight:800;color:#0C4A6E}.ci{font-size:10px;color:#555;margin-top:5px;line-height:1.7}'
+    +'.it{font-size:22px;font-weight:800;color:#222;letter-spacing:1px;text-align:right}'
+    +'.im{font-size:10px;color:#555;text-align:right;margin-top:5px;line-height:1.8}'
+    +'.stat{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;background:'+sbg+';color:'+scol+'}'
+    +'.ptb{background:#f5f7f7;border:1px solid #dde2e2;border-radius:7px;padding:12px 16px;margin-bottom:24px}'
+    +'.ptl{font-size:9px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}'
+    +'table{width:100%;border-collapse:collapse}'
+    +'.ih th{background:#0C4A6E;color:#fff;padding:8px 10px;font-size:10px;text-align:left}'
+    +'.ih th:nth-child(2){text-align:center}.ih th:nth-child(3),.ih th:nth-child(4){text-align:right}'
+    +'.tots{margin-top:16px;margin-left:auto;width:240px}'
+    +'.tr{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:1px solid #eee}'
+    +'.tg{font-weight:700;font-size:14px;border-top:2px solid #0C4A6E;border-bottom:none;padding-top:9px;margin-top:4px}'
+    +'.foot{margin-top:40px;border-top:1px solid #dde2e2;padding-top:12px;font-size:9px;color:#999;text-align:center}'
+    +'@media print{.page{padding:20px}}</style>'
+    +'</head><body onload="window.print()"><div class="page">'
+    +'<div class="top"><div><div class="cn">'+escHtml(cl.name||'Beyond Mechanics')+'</div>'
+    +'<div class="ci">'+escHtml(cl.therapist||'')+'<br>'+escHtml(cl.address||'')+'<br>'+escHtml(cl.phone||'')+'<br>'+escHtml(cl.email||'')+'</div></div>'
+    +'<div><div class="it">INVOICE</div><div class="im">'+(b.invoiceNo?'No: <b>'+escHtml(b.invoiceNo)+'</b><br>':'')+'Date: '+escHtml(v.date||'')+'<br>Visit: '+(CV===0?'Initial':'Follow-up '+CV)+'<br><br><span class="stat">'+((b.status||'unpaid').toUpperCase())+'</span></div></div></div>'
+    +'<div class="ptb"><div class="ptl">Billed to</div><b>'+escHtml(pi.name||'')+'</b><br>'+escHtml(pi.occupation||'')+'</div>'
+    +'<table><thead class="ih"><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead>'
+    +'<tbody>'+(lineRows||'<tr><td colspan="4" style="padding:12px;text-align:center;color:#888">No items</td></tr>')+'</tbody></table>'
+    +'<div class="tots">'
+    +'<div class="tr"><span style="color:#555">Subtotal</span><span>'+cur+sub.toFixed(2)+'</span></div>'
+    +(tax?'<div class="tr"><span style="color:#555">'+escHtml(cl.taxLabel||'Tax')+' ('+tax+'%)</span><span>'+cur+taxAmt.toFixed(2)+'</span></div>':'')
+    +'<div class="tr tg"><span>Total</span><span>'+cur+total.toFixed(2)+'</span></div>'
+    +(b.paymentMethod?'<div class="tr" style="border-bottom:none;font-size:10px;color:#555"><span>Payment</span><span>'+escHtml(b.paymentMethod)+(b.paymentDate?' &middot; '+b.paymentDate:'')+'</span></div>':'')
+    +'</div>'
+    +(b.notes?'<div style="margin-top:18px;font-size:11px;color:#555;padding:9px 12px;background:#f9f9f9;border-radius:5px">'+escHtml(b.notes)+'</div>':'')
+    +'<div class="foot">Thank you for your visit &nbsp;&middot;&nbsp; '+escHtml(cl.name||'')+(cl.phone?' &nbsp;&middot;&nbsp; '+escHtml(cl.phone):'')+'</div>'
+    +'</div></body></html>';
+}
+
+function escHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   OFFLINE-FIRST SYNC ENGINE
+   ─────────────────────────────────────────────────────────────
+   How it works:
+   • All data lives in localStorage (always available, even offline)
+   • Every patient edit is timestamped (updatedAt)
+   • When server is reachable → sync merges by timestamp (newest wins)
+   • When offline → keeps working, queues a "dirty" flag
+   • At home on Wi-Fi → tap Sync Once to push everything to SQLite
+   • Smart merge: never overwrites newer data with older data
+   ═══════════════════════════════════════════════════════════════ */
+
+var SERVER_URL = '';
+var IS_ONLINE  = false;   /* true only when server is confirmed reachable */
+
+try { SERVER_URL = localStorage.getItem('bm_server_url') || ''; } catch(e) {}
+
+/* ── Timestamp every save ── */
+function sv() {
+  try {
+    /* Mark each patient with the time it was last changed */
+    var now = new Date().toISOString();
+    for (var i = 0; i < DB.patients.length; i++) {
+      if (!DB.patients[i]._local_updated) DB.patients[i]._local_updated = now;
+    }
+    localStorage.setItem('bm_v6', JSON.stringify(DB));
+    localStorage.setItem('bm_dirty', '1');   /* flag: unsynced changes exist */
+  } catch(e) {}
+}
+
+/* ── Mark a patient as just changed ── */
+function touchPt(id) {
+  var now = new Date().toISOString();
+  for (var i = 0; i < DB.patients.length; i++) {
+    if (DB.patients[i].id === id) { DB.patients[i]._local_updated = now; break; }
+  }
+}
+
+/* ── Smart merge: newest version of each patient wins, deleted IDs excluded ── */
+function mergePatients(local, remote) {
+  /* Build a set of locally deleted IDs to exclude from server data */
+  var deleted = {};
+  var dids = DB.deletedIds || [];
+  for (var i = 0; i < dids.length; i++) deleted[dids[i]] = true;
+
+  var byId = {};
+  for (var i = 0; i < local.length; i++) {
+    if (!deleted[local[i].id]) byId[local[i].id] = local[i];
+  }
+  for (var i = 0; i < remote.length; i++) {
+    var rp = remote[i];
+    /* Skip patients that were deleted locally */
+    if (deleted[rp.id]) continue;
+    var lp = byId[rp.id];
+    if (!lp) {
+      /* Patient only on server → add locally */
+      byId[rp.id] = rp;
+    } else {
+      /* Both have it → keep whichever is newer */
+      var lt = lp._local_updated || lp._server_updated || '0';
+      var rt = rp._server_updated || rp._local_updated || '0';
+      if (rt > lt) byId[rp.id] = rp;
+    }
+  }
+  var result = [];
+  for (var k in byId) { if (Object.prototype.hasOwnProperty.call(byId, k)) result.push(byId[k]); }
+  result.sort(function(a,b){ return (a.info&&a.info.name||'').localeCompare(b.info&&b.info.name||''); });
+  return result;
+}
+
+/* ── Build API URL — appends ?token= if present in the saved URL ── */
+function apiUrl(endpoint) {
+  var base = SERVER_URL.replace(/\/$/, '');
+  /* If the URL itself contains ?token=xxx, extract and reuse it */
+  var tokenMatch = base.match(/[?&]token=([^&]+)/);
+  var token = tokenMatch ? tokenMatch[1] : '';
+  var cleanBase = base.split('?')[0];
+  return cleanBase + endpoint + (token ? '?token=' + encodeURIComponent(token) : '');
+}
+
+/* ── Server URL ── */
+function saveServerUrl(v) {
+  SERVER_URL = v.trim();
+  try { localStorage.setItem('bm_server_url', SERVER_URL); } catch(e) {}
+}
+
+function initServerUI() {
+  var el = document.getElementById('serverUrl');
+  if (el && SERVER_URL) el.value = SERVER_URL;
+  /* Restore last synced timestamp */
+  try {
+    var ls = localStorage.getItem('bm_last_sync');
+    var lbl = document.getElementById('lastSyncedLabel');
+    if (ls && lbl) lbl.textContent = 'Last synced: ' + ls;
+  } catch(e) {}
+}
+
+/* ── Connection status display ── */
+function setStatus(msg, ok) {
+  var el = document.getElementById('serverStatus');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = ok === true ? '#0F6E56' : ok === false ? '#A32D2D' : '#5a6868';
+  IS_ONLINE = (ok === true);
+  updateSyncBadge();
+  /* Update last synced label when a successful sync occurs */
+  if (ok === true && msg.indexOf('Synced') === 0) {
+    var now = new Date();
+    var d = now.toLocaleDateString([], {day:'2-digit',month:'short',year:'numeric'});
+    var t = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    var lbl = document.getElementById('lastSyncedLabel');
+    if (lbl) lbl.textContent = 'Last synced: ' + d + ' ' + t;
+    try { localStorage.setItem('bm_last_sync', d + ' ' + t); } catch(e) {}
+  }
+}
+
+function updateSyncBadge() {
+  var dirty = '';
+  try { dirty = localStorage.getItem('bm_dirty') || ''; } catch(e) {}
+  var badge = document.getElementById('dirtyBadge');
+  if (!badge) return;
+  badge.style.display = dirty ? 'inline' : 'none';
+  badge.title = dirty ? 'Unsynced changes — tap Sync when at home' : '';
+}
+
+/* ── SYNC (push local → server, pull merged result back) ── */
+function syncServer() {
+  if (!SERVER_URL) { showToast('Enter your home server URL first', true); return; }
+  doCollect();
+  var btn = document.getElementById('syncBtn');
+  if (btn) btn.classList.add('syncing');
+  setStatus('Syncing…');
+
+  /* Tag all local patients with local timestamp before sending */
+  var now = new Date().toISOString();
+  var toSend = JSON.parse(JSON.stringify(DB.patients));
+  for (var i = 0; i < toSend.length; i++) {
+    if (!toSend[i]._local_updated) toSend[i]._local_updated = now;
+  }
+
+  fetch(apiUrl('/sync'), {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ patients: toSend, clinic: DB.clinic, deletedIds: DB.deletedIds || [] })
+  })
+  .then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(function(data) {
+    if (data.patients) {
+      /* Merge server response with local — newest wins per patient */
+      var merged = mergePatients(DB.patients, data.patients);
+      DB.patients = merged;
+      if (data.clinic) {
+        for (var k in data.clinic) {
+          if (Object.prototype.hasOwnProperty.call(data.clinic, k)) DB.clinic[k] = data.clinic[k];
+        }
+      }
+      /* Clear deletedIds — server has processed them */
+      DB.deletedIds = [];
+      /* Save merged result, clear dirty flag */
+      try {
+        localStorage.setItem('bm_v6', JSON.stringify(DB));
+        localStorage.removeItem('bm_dirty');
+      } catch(e) {}
+      var prev = CUR ? CUR.id : null;
+      CUR = null; CV = 0;
+      renderSB();
+      /* Re-select previously open patient if there was one */
+      if (prev) {
+        for (var i = 0; i < DB.patients.length; i++) {
+          if (DB.patients[i].id === prev) { selectPt(prev); break; }
+        }
+      }
+      if (!CUR) {
+        document.getElementById('mainArea').innerHTML =
+          '<div class="empty-s"><div class="es-icon">✅</div>'
+          +'<div class="es-txt">Sync complete</div>'
+          +'<div class="es-sub">'+merged.length+' patients · all data up to date</div></div>';
+      }
+    }
+    setStatus('Synced ' + new Date().toLocaleTimeString(), true);
+    showToast('Sync complete ✓ · ' + data.patients.length + ' patients');
+  })
+  .catch(function(err) {
+    setStatus('Server unreachable', false);
+    showToast('Cannot reach server — working offline', true);
+  })
+  .finally(function() {
+    if (btn) btn.classList.remove('syncing');
+  });
+}
+
+/* ── Silent background ping to check connectivity ── */
+function pingServer() {
+  if (!SERVER_URL) return;
+  fetch(apiUrl('/ping'), { method: 'GET' })
+    .then(function(r) {
+      if (r.ok) {
+        setStatus('Server reachable ✓', true);
+        /* Auto-sync if there are pending changes and server just became available */
+        var dirty = '';
+        try { dirty = localStorage.getItem('bm_dirty') || ''; } catch(e) {}
+        if (dirty) showToast('Server reachable — tap Sync to push clinic data');
+      } else {
+        setStatus('Server unreachable', false);
+      }
+    })
+    .catch(function() { setStatus('Offline — clinic mode', false); });
+}
+
+/* ─── EXPORT / IMPORT JSON ─── */
+function exportJSON() {
+  doCollect();
+  var payload = { version: 1, exported: new Date().toISOString(), clinic: DB.clinic, patients: DB.patients };
+  var json  = JSON.stringify(payload, null, 2);
+  var blob  = new Blob([json], { type: 'application/json' });
+  var url   = URL.createObjectURL(blob);
+  var a     = document.createElement('a');
+  var d     = new Date();
+  var stamp = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  a.href     = url;
+  a.download = 'BeyondMechanics_backup_' + stamp + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Backup downloaded ✓');
+}
+
+function importJSON(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var data = JSON.parse(e.target.result);
+      if (!data.patients) { showToast('Invalid backup file', true); return; }
+      var mode = confirm(
+        'Import ' + data.patients.length + ' patients?\n\n' +
+        'OK     = MERGE  (keep current + add from file, newest wins)\n' +
+        'Cancel = REPLACE (wipe current and load file)'
+      );
+      if (mode) {
+        var merged = mergePatients(DB.patients, data.patients);
+        var added  = merged.length - DB.patients.length;
+        DB.patients = merged;
+        showToast('Merged · ' + added + ' new patients added ✓');
+      } else {
+        DB.patients = data.patients;
+        if (data.clinic) {
+          for (var k in data.clinic) {
+            if (Object.prototype.hasOwnProperty.call(data.clinic, k)) DB.clinic[k] = data.clinic[k];
+          }
+        }
+        CUR = null; CV = 0;
+        showToast('Data replaced from backup ✓');
+      }
+      try { localStorage.setItem('bm_v6', JSON.stringify(DB)); localStorage.setItem('bm_dirty','1'); } catch(ex) {}
+      renderSB();
+      document.getElementById('mainArea').innerHTML =
+        '<div class="empty-s"><div class="es-icon">✅</div><div class="es-txt">Import complete</div>'
+        +'<div class="es-sub">Select a patient from the list</div></div>';
+    } catch(err) {
+      showToast('Import failed — invalid file', true);
+    }
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
+
+/* ─── TOAST ─── */
+function showToast(msg, isErr) {
+  var t = document.getElementById('bmToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'bmToast';
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:11px 22px;border-radius:12px;font-size:13px;font-weight:600;color:#fff;z-index:9999;transition:opacity .35s;pointer-events:none;text-align:center;max-width:90vw';
+    document.body.appendChild(t);
+  }
+  t.textContent    = msg;
+  t.style.background = isErr ? '#A32D2D' : '#0F6E56';
+  t.style.opacity  = '1';
+  clearTimeout(t._tmr);
+  t._tmr = setTimeout(function() { t.style.opacity = '0'; }, 3200);
+}
+
+/* ─── SEARCH / FILTER ─── */
+function filterPts(q) {
+  q = q.trim().toLowerCase();
+  var list = document.getElementById('ptList');
+  if (!list) return;
+  var html = '';
+  for (var i = 0; i < DB.patients.length; i++) {
+    var p = DB.patients[i];
+    var n = p.info.name ? p.info.name : 'Unnamed';
+    if (!q || n.toLowerCase().indexOf(q) >= 0) {
+      var active = (CUR && CUR.id === p.id) ? ' active' : '';
+      html += '<div class="sb-item'+active+'" onclick="selectPt(\''+p.id+'\')">' + '<div class="sb-iname">'+esc(n)+'</div>'
+            + '<div class="sb-imeta">'+p.visits.length+' visit'+(p.visits.length!==1?'s':'')+'</div></div>';
+    }
+  }
+  list.innerHTML = html || '<div style="padding:10px 13px;font-size:11px;color:var(--muted)">No results</div>';
+}
+
+/* ─── AUTO-SAVE WITH TIMESTAMP ─── */
+function doCollectAndSave() {
+  doCollect();
+  var btn = document.getElementById('saveBtn');
+  if (btn) {
+    var t = new Date();
+    var ts = String(t.getHours()).padStart(2,'0') + ':' + String(t.getMinutes()).padStart(2,'0');
+    btn.textContent = 'Saved ' + ts;
+    btn.style.background = 'var(--tl)';
+    btn.style.borderColor = 'var(--tl)';
+    setTimeout(function() {
+      if (btn) {
+        btn.textContent = 'Save';
+        btn.style.background = '';
+        btn.style.borderColor = '';
+      }
+    }, 3000);
+  }
+  showToast('Saved ✓');
+}
+
+/* ─── RED FLAGS — iOS-safe toggle ─── */
+function toggleRedFlag(key) {
+  if (!CUR) return;
+  var v = CUR.visits[CV];
+  if (!v.msk) v.msk = {};
+  if (!v.msk.redFlags) v.msk.redFlags = {};
+  /* Toggle the value */
+  v.msk.redFlags[key] = (v.msk.redFlags[key] === '1') ? '0' : '1';
+  CUR._local_updated = new Date().toISOString();
+  sv();
+  /* Re-render only the red flag section to show new state */
+  renderTab('msk');
+}
+
+/* ─── RED FLAGS COLLECT ─── */
+function collectRedFlags() {
+  if (!CUR) return;
+  var v = CUR.visits[CV];
+  if (!v.msk) v.msk = {};
+  if (!v.msk.redFlags) v.msk.redFlags = {};
+  var f = document.getElementById('ptForm');
+  if (!f) return;
+  /* Save all checkbox states immediately without triggering full doCollect */
+  var checkboxes = f.querySelectorAll('[data-rf]');
+  for (var i = 0; i < checkboxes.length; i++) {
+    v.msk.redFlags[checkboxes[i].dataset.rf] = checkboxes[i].checked ? '1' : '0';
+  }
+  /* Also save any text fields in the form that may have changed */
+  var dataFs = f.querySelectorAll('[data-f]');
+  for (var i = 0; i < dataFs.length; i++) {
+    var el = dataFs[i];
+    var path = el.dataset.f.split('.');
+    var obj = v;
+    for (var j = 0; j < path.length - 1; j++) {
+      if (obj[path[j]] === undefined || obj[path[j]] === null) obj[path[j]] = {};
+      obj = obj[path[j]];
+    }
+    obj[path[path.length-1]] = el.value;
+  }
+  CUR._local_updated = new Date().toISOString();
+  sv();
+}
+
+/* ─── PSFS HELPER ─── */
+function psfsRows(n) {
+  var rows = n.psfs || [];
+  /* Always show 3 activity rows */
+  while (rows.length < 3) rows.push({activity:'', score:''});
+  var html = '';
+  for (var i = 0; i < rows.length; i++) {
+    html += '<div style="display:grid;grid-template-columns:minmax(0,2fr) 80px;gap:8px;align-items:center;margin-bottom:6px">'
+      +'<input data-psfs="'+i+'.activity" value="'+esc(rows[i].activity||'')+'" placeholder="Activity (e.g. Walking 500m)" oninput="collectPSFS()" type="text" style="font-size:12px;padding:7px 9px">'
+      +'<input data-psfs="'+i+'.score" value="'+esc(rows[i].score||'')+'" placeholder="0–10" type="number" min="0" max="10" oninput="collectPSFS()" style="font-size:12px;padding:7px 9px;text-align:center">'
+      +'</div>';
+  }
+  return html;
+}
+
+function collectPSFS() {
+  if (!CUR) return;
+  var v = CUR.visits[CV];
+  if (!v.nrs) v.nrs = {};
+  var f = document.getElementById('ptForm');
+  if (!f) return;
+  var psfsEls = f.querySelectorAll('[data-psfs]');
+  if (!v.nrs.psfs) v.nrs.psfs = [{},{},{}];
+  for (var i = 0; i < psfsEls.length; i++) {
+    var parts = psfsEls[i].dataset.psfs.split('.');
+    var idx = parseInt(parts[0],10); var key = parts[1];
+    if (!v.nrs.psfs[idx]) v.nrs.psfs[idx] = {};
+    v.nrs.psfs[idx][key] = psfsEls[i].value;
+  }
+  CUR._local_updated = new Date().toISOString();
+  sv();
+}
+
+/* ─── NRS PROGRESS CHART ─── */
+function drawNRSChart() {
+  var canvas = document.getElementById('nrsChart');
+  if (!canvas || !CUR) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.offsetWidth || 560;
+  var H = 160;
+  canvas.width = W * (window.devicePixelRatio || 1);
+  canvas.height = H * (window.devicePixelRatio || 1);
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  ctx.clearRect(0, 0, W, H);
+
+  var dark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var gridCol = dark ? '#2a3636' : '#e8eeee';
+  var textCol = dark ? '#7aacac' : '#5a6868';
+  var lineCol = '#E24B4A';
+  var dotCol  = '#534AB7';
+
+  /* Collect current NRS scores across visits */
+  var points = [];
+  for (var i = 0; i < CUR.visits.length; i++) {
+    var nrs = CUR.visits[i].nrs || {};
+    var val = nrs.current;
+    var lbl = i === 0 ? 'Initial' : 'FU ' + i;
+    points.push({ label: lbl, value: val !== null && val !== undefined ? val : null });
+  }
+
+  var validPts = points.filter(function(p){ return p.value !== null; });
+  var padL = 34, padR = 16, padT = 14, padB = 36;
+  var plotW = W - padL - padR;
+  var plotH = H - padT - padB;
+
+  /* Grid lines 0,2,4,6,8,10 */
+  ctx.strokeStyle = gridCol; ctx.lineWidth = 1;
+  for (var g = 0; g <= 10; g += 2) {
+    var y = padT + plotH - (g / 10) * plotH;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + plotW, y); ctx.stroke();
+    ctx.fillStyle = textCol; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(g, padL - 4, y + 3);
+  }
+
+  if (validPts.length === 0) {
+    ctx.fillStyle = textCol; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('No scores recorded yet', W / 2, H / 2);
+    return;
+  }
+
+  /* X positions */
+  var step = points.length > 1 ? plotW / (points.length - 1) : plotW / 2;
+  var coords = [];
+  for (var i = 0; i < points.length; i++) {
+    var x = padL + (points.length > 1 ? i * step : plotW / 2);
+    var y2 = points[i].value !== null ? padT + plotH - (points[i].value / 10) * plotH : null;
+    coords.push({ x: x, y: y2, label: points[i].label, val: points[i].value });
+  }
+
+  /* Line */
+  ctx.strokeStyle = lineCol; ctx.lineWidth = 2.5; ctx.lineJoin = 'round';
+  ctx.beginPath();
+  var started = false;
+  for (var i = 0; i < coords.length; i++) {
+    if (coords[i].y === null) continue;
+    if (!started) { ctx.moveTo(coords[i].x, coords[i].y); started = true; }
+    else ctx.lineTo(coords[i].x, coords[i].y);
+  }
+  ctx.stroke();
+
+  /* Dots + labels */
+  for (var i = 0; i < coords.length; i++) {
+    if (coords[i].y === null) continue;
+    /* Colour dot by severity */
+    var v2 = coords[i].val;
+    var dc = v2 <= 3 ? '#1D9E75' : v2 <= 6 ? '#BA7517' : '#E24B4A';
+    ctx.fillStyle = dc; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(coords[i].x, coords[i].y, 5, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    /* Score label above dot */
+    ctx.fillStyle = textCol; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(coords[i].val, coords[i].x, coords[i].y - 8);
+    /* X-axis label */
+    ctx.font = '9px sans-serif';
+    ctx.fillText(coords[i].label, coords[i].x, H - padB + 14);
+  }
+}
+
+/* ─── INIT ─── */
+renderSB();
+initServerUI();
+updateSyncBadge();
+/* Ping server on load — silently checks if we're at home on Wi-Fi */
+if (SERVER_URL) setTimeout(pingServer, 600);
+/* Re-ping every 60 seconds in case connectivity changes */
+setInterval(function() { if (SERVER_URL) pingServer(); }, 60000);
+</script>
+</body>
+</html>
