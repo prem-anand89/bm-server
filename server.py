@@ -16,7 +16,10 @@ SECURITY: Set a secret token in the SYNC_TOKEN environment variable.
     (the app reads the token from the URL automatically)
 
 DATABASE:
-  - Cloud: uses /tmp/bm_database.db  (resets on redeploy — use sync+export for backup)
+  - Cloud: attach a Railway Volume (Settings → Volumes, mount path /data); the DB is
+         then stored there and survives redeploys. Without a volume it falls back to
+         /tmp/bm_database.db which resets on every redeploy.
+  - Override the location with the DB_PATH environment variable.
   - Local: uses bm_database.db next to this file
 """
 
@@ -35,7 +38,18 @@ SYNC_TOKEN = os.environ.get('SYNC_TOKEN', '')   # empty = no auth (local only)
 IS_CLOUD   = os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RENDER') or os.environ.get('FLY_APP_NAME')
 
 HERE    = os.path.dirname(os.path.abspath(__file__))
-DB_FILE = '/tmp/bm_database.db' if IS_CLOUD else os.path.join(HERE, 'bm_database.db')
+# Persistent storage: DB_PATH wins, else a Railway Volume (auto-set
+# RAILWAY_VOLUME_MOUNT_PATH), else /tmp on cloud (wiped on redeploy), else local.
+_VOLUME = os.environ.get('RAILWAY_VOLUME_MOUNT_PATH', '')
+if os.environ.get('DB_PATH'):
+    DB_FILE = os.environ['DB_PATH']
+elif _VOLUME:
+    DB_FILE = os.path.join(_VOLUME, 'bm_database.db')
+elif IS_CLOUD:
+    DB_FILE = '/tmp/bm_database.db'
+else:
+    DB_FILE = os.path.join(HERE, 'bm_database.db')
+DB_PERSISTENT = not (IS_CLOUD and DB_FILE == '/tmp/bm_database.db')
 APP_FILE = os.path.join(HERE, 'BM_Patient_Assessment.html')
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -54,6 +68,10 @@ def get_db():
     return conn
 
 def init_db():
+    os.makedirs(os.path.dirname(DB_FILE) or '.', exist_ok=True)
+    if not DB_PERSISTENT:
+        log("WARNING: database is in /tmp and will be WIPED on redeploy. "
+            "Attach a Railway Volume (mount e.g. /data) to keep data.")
     conn = get_db()
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS patients (
