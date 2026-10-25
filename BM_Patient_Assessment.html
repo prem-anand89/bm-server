@@ -89,7 +89,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .abtn.red{background:var(--rl);color:var(--r);border-color:var(--rm)}
 /* Sync button stacks "⟳ Sync" over a compact last-synced time, both kept
    inside the button so the timestamp can never displace the layout. */
-.sb-sync{flex-direction:column;gap:0;justify-content:center;line-height:1.1}
+.sb-sync{flex-direction:row;gap:4px;justify-content:center;line-height:1.1}
 .sb-sync .sb-main{display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
 .sb-sync #lastSyncedLabel{font-size:8px;font-weight:600;color:var(--sub);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .sb-sync #lastSyncedLabel:empty{display:none}
@@ -217,7 +217,32 @@ hr.div{border:none;border-top:1px solid var(--brd);margin:12px 0}
 .pl-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
 .pl-rf{background:#FCEBEB;color:#C0392B}
 .pl-up{background:#FFF3E0;color:#B26A00}
-@media(max-width:520px){.pt-bar{gap:5px}.pt-bar-right .abtn span:not(#dirtyBadge){display:none}}
+@media(max-width:520px){.pt-bar-right .abtn span:not(#dirtyBadge){display:none}}
+/* Phone / small tablet: two-row action bar so nothing is covered or clipped.
+   Row 1 = Patients + Search; row 2 = New, Sync, then icon buttons. */
+@media(max-width:700px){
+  .pt-bar{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:8px}
+  .pt-bar-left{width:100%;gap:6px}
+  #ptSearch{flex:1 1 0!important;min-width:0!important;font-size:16px!important}
+  .pt-bar-right{width:100%;flex-wrap:nowrap;gap:6px;align-items:flex-start}
+  .pt-new{flex:1.15 1 0;justify-content:center;min-height:40px;font-size:13px;font-weight:700}
+  .pt-sync-wrap{flex:1 1 0;flex-direction:column;align-items:stretch!important}
+  .pt-sync-wrap .abtn{width:100%;justify-content:center;min-height:40px;font-size:13px}
+  .pt-sync-wrap #lastSyncedLabel{position:static!important;text-align:center;margin-top:2px;font-size:9px!important}
+  .pt-ico{flex:0 0 40px;width:40px;min-height:40px;padding:0;justify-content:center;font-size:14px}
+  #ptListBtn{min-height:40px}
+}
+@media(max-width:700px){
+  .pt-acts{margin-left:0;width:100%;flex-wrap:nowrap;gap:6px}
+  .pt-acts .abtn{flex:1 1 0;justify-content:center;min-height:40px;padding:6px 4px}
+  .pl-filters{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pl-f select{width:100%}
+}
+@media(max-width:480px){
+  .ch-contact{flex-direction:column;gap:2px}
+  .ch-contact span{font-size:10px;align-items:flex-start}
+}
+
 /* Two-column flow on laptops only (>=1024px). Form-heavy tabs add .colflow to
    their form; wide content (tables, charts) gets .fullspan to span both
    columns so it is never squeezed. iPad/phone stay single-column. */
@@ -281,19 +306,19 @@ hr.div{border:none;border-top:1px solid var(--brd);margin:12px 0}
       style="font-size:12px;padding:8px 11px;border:1.5px solid var(--brd);border-radius:9px;background:var(--card);color:var(--text);font-family:inherit;flex:1 1 160px;min-width:90px">
   </div>
   <div class="pt-bar-right">
-    <button class="abtn grn" onclick="newPt()">＋ New</button>
-    <button class="abtn" onclick="exportJSON()" title="Export backup">⬇</button>
-    <button class="abtn" onclick="document.getElementById('importFile').click()" title="Import backup">⬆</button>
+    <button class="abtn grn pt-new" onclick="newPt()">＋ New</button>
+    <button class="abtn pt-ico" onclick="exportJSON()" title="Export backup" aria-label="Export backup">⬇</button>
+    <button class="abtn pt-ico" onclick="document.getElementById('importFile').click()" title="Import backup" aria-label="Import backup">⬆</button>
     <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(this)">
-    <div style="position:relative;display:flex;align-items:center">
+    <div class="pt-sync-wrap" style="position:relative;display:flex;align-items:center">
       <button class="abtn sb-sync" id="syncBtn" onclick="syncServer()" title="Sync server" style="white-space:nowrap">
         ⟳ Sync
         <span id="dirtyBadge" style="display:none;background:#E24B4A;color:#fff;border-radius:20px;font-size:9px;padding:1px 5px;font-weight:700;margin-left:2px">●</span>
       </button>
       <span id="lastSyncedLabel" style="position:absolute;top:100%;right:0;margin-top:1px;font-size:9px;color:var(--sub);white-space:nowrap;pointer-events:none"></span>
     </div>
-    <button class="abtn" onclick="cycleTheme()" title="Theme: Auto / Light / Dark" id="themeBtn">🌓</button>
-    <button class="abtn" onclick="toggleServerPanel()" title="Server settings" id="srvToggle">⚙</button>
+    <button class="abtn pt-ico" onclick="cycleTheme()" title="Theme: Auto / Light / Dark" aria-label="Change theme" id="themeBtn">🌓</button>
+    <button class="abtn pt-ico" onclick="toggleServerPanel()" title="Server settings" aria-label="Server settings" id="srvToggle">⚙</button>
   </div>
 </div>
 
