@@ -78,6 +78,9 @@ def init_db():
         id TEXT PRIMARY KEY, name TEXT,
         data TEXT NOT NULL, updated_at TEXT NOT NULL
     )''')
+    c.execute('''CREATE TABLE IF NOT EXISTS deleted_patients (
+        id TEXT PRIMARY KEY, deleted_at TEXT NOT NULL
+    )''')
     c.execute('''CREATE TABLE IF NOT EXISTS clinic (
         key TEXT PRIMARY KEY, value TEXT NOT NULL
     )''')
@@ -89,7 +92,29 @@ def init_db():
     conn.close()
     log(f"DB ready: {DB_FILE}")
 
+def mark_deleted(ids):
+    """Delete patients AND remember their ids (tombstones) so a device that
+    still holds a copy cannot sync them back in."""
+    ids = [i for i in ids if i]
+    if not ids: return
+    conn = get_db()
+    now  = utcnow()
+    for pid in ids:
+        conn.execute('DELETE FROM patients WHERE id=?', (pid,))
+        conn.execute('INSERT OR IGNORE INTO deleted_patients (id,deleted_at) VALUES (?,?)', (pid, now))
+    conn.commit()
+    conn.close()
+
+def tombstone_ids():
+    conn = get_db()
+    rows = conn.execute('SELECT id FROM deleted_patients').fetchall()
+    conn.close()
+    return [r['id'] for r in rows]
+
 def save_patients(patients):
+    if not patients: return
+    tomb = set(tombstone_ids())
+    patients = [p for p in patients if p.get('id','') not in tomb]
     if not patients: return
     conn = get_db()
     c    = conn.cursor()
@@ -287,15 +312,11 @@ class BMHandler(BaseHTTPRequestHandler):
 
             # Delete patients the client has removed — do this FIRST
             if deleted_ids:
-                conn = get_db()
-                for did in deleted_ids:
-                    conn.execute('DELETE FROM patients WHERE id=?', (did,))
-                conn.commit()
-                conn.close()
+                mark_deleted(deleted_ids)
                 log(f"DELETED {len(deleted_ids)} patient(s) from DB")
 
-            # Build set of deleted IDs to exclude from merge
-            deleted_set = set(deleted_ids)
+            # Exclude everything ever deleted (this request + earlier ones)
+            deleted_set = set(tombstone_ids())
 
             # Filter out deleted patients from incoming list too
             client_patients = [p for p in client_patients if p.get('id') not in deleted_set]
@@ -310,7 +331,8 @@ class BMHandler(BaseHTTPRequestHandler):
             clinic       = load_clinic()
             log_sync('sync', len(all_patients))
             log(f"SYNC {len(client_patients)} in, {len(deleted_ids)} deleted → {len(all_patients)} total")
-            self.send_json({'patients': all_patients, 'clinic': clinic, 'count': len(all_patients)})
+            self.send_json({'patients': all_patients, 'clinic': clinic, 'count': len(all_patients),
+                            'deletedIds': sorted(deleted_set)})
 
         elif clean == '/patient':
             body = self.read_body()
@@ -325,10 +347,7 @@ class BMHandler(BaseHTTPRequestHandler):
             body = self.read_body()
             pid  = body.get('id')
             if pid:
-                conn = get_db()
-                conn.execute('DELETE FROM patients WHERE id=?', (pid,))
-                conn.commit()
-                conn.close()
+                mark_deleted([pid])
                 log_sync('delete', 1)
                 self.send_json({'ok': True})
             else:
