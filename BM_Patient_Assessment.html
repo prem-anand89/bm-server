@@ -2507,6 +2507,15 @@ function syncServer(silent) {
   .then(function(data) {
     _serverOk = true;
     if (data.patients) {
+      /* Server tombstones: patients deleted on any device must disappear here too,
+         otherwise this device would push them straight back to the server. */
+      var gone = {}, goneOpen = false;
+      (data.deletedIds || []).forEach(function(id){ gone[id] = true; });
+      DB.patients = DB.patients.filter(function(p){
+        if (gone[p.id]) { if (CUR && CUR.id === p.id) goneOpen = true; return false; }
+        return true;
+      });
+      if (goneOpen) { CUR = null; CV = 0; showPatientList(); }
       /* Merge server response with local — newest wins per patient */
       var merged = mergePatients(DB.patients, data.patients);
       DB.patients = merged;
